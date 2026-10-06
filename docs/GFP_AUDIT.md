@@ -1,24 +1,28 @@
-# ESMC GFP 运行：证据审计
+# ESMC GFP Run: Evidence Audit
 
-## 可直接支持的结论
+Language: **English** | [简体中文](GFP_AUDIT.zh-CN.md)
 
-- 已完成运行处理了 238 aa GFP；`candidate_sites_all.csv` 为 238 行，位置、rank、token-index 与 FASTA 的一一核对通过。
-- 实际 tokenizer 将 `MSK` 编为 `<cls>, M, S, K, <eos>` / `[0,20,8,15,2]`，`special_tokens_mask=[1,0,0,0,1]`；完整序列 token 长度为 240。
-- 本次 runner 直接实例化官方 `EsmcTokenizer` 并优先取其 `mask_token_id`。已安装官方 tokenizer 源码把 `|` 固定为 31、`<mask>` 固定为 32，并说明该 canonical vocabulary 用于所有 ESMC checkpoints；因此本次每个被遮挡位置使用的是有效的 `<mask>=32`。
-- 导出 `H` 为 238×2560、FP16；均值蛋白向量为 2560、FP32。
-- Q/K LayerNorm 在每个 token 的完整 2560 维 Q、K 上执行，随后再拆为 40×64 heads、加 RoPE 并计算 attention。QKV/out/FFN 线性投影无 bias；fallback QKV/FFN pre-LN 带 `layer_norm_bias`，Q/K LN 和 final LN 则为 bias=False。
-- SAE layer 60 的 15,232 条激活满足 238×64；1,134 个活跃 feature ID 均有描述。
-- 实现直接返回的是展平非 padding token 的 `N×16384` sparse tensor。本次先得到含 `<cls>/<eos>` 的 `240×16384`，runner 依 special-token mapping 筛为导出的 `238×16384` 残基矩阵；`B×T×16384` 仅适合作为概念性 reshape 图示。
-- SAE 对每条输入表示的 2560 个通道即时计算均值和标准差（各为 N×1），再做 z-score；它不使用保存的层级 μ/σ。`W_enc` 与 `W_dec` 独立，只有 2560 维 `b_dec`；本次 `normalize_sae=False`，CSV 保留 raw TopK activation。
-- 排名是本次冻结推理及 `.7/.3` 启发式的候选排序。GFP 发色团 S65/Y66/G67 的实测 rank 为 225/223/211，score 为 -0.387662/-0.357207/-0.300504。
+This audit describes the archived GFP run and its accompanying source and structural-reference snapshots. It is not a live re-query of upstream annotations.
 
-## 评分复核
+## Directly supported conclusions
 
-- `conditional_preference` 正值 28 个、负值 210 个。裁剪 `max(m,0)` 后中位数=0、MAD=0，代码走标准差回退，scale=0.2061997034。
-- `contextual_novelty` 使用 MAD scale=0.0270947251。重算 constraint 分量的最大绝对误差为 4.44e-16；重算总分误差为 1.78e-15。
-- 因此，210 个负 margin 位置的 constraint z 都是 0；这些位置的分位次主要由 novelty 分量区分。
+- The completed run processed a 238-aa GFP sequence. `candidate_sites_all.csv` has 238 rows; position, rank, token index, and FASTA correspondence checks passed.
+- The tokenizer encodes `MSK` as `<cls>, M, S, K, <eos>` / `[0,20,8,15,2]`, with `special_tokens_mask=[1,0,0,0,1]`. The full sequence contains 240 tokens.
+- The runner directly instantiates the official `EsmcTokenizer` and prioritizes its `mask_token_id`. The installed official tokenizer source fixes `|` at 31 and `<mask>` at 32, stating that this canonical vocabulary is used for all ESMC checkpoints. Each masked position in this run therefore used the valid `<mask>=32` token.
+- Exported `H` has shape 238×2560 and dtype FP16; the mean-pooled protein vector has length 2560 and dtype FP32.
+- Q/K LayerNorm operates on each token's full 2560-dimensional Q and K vectors before splitting them into 40 heads of dimension 64, applying RoPE, and computing attention. QKV/out/FFN linear projections have no bias. Fallback QKV/FFN pre-LN uses the `layer_norm_bias` setting; Q/K LN and final LN use `bias=False`.
+- The 15,232 layer-60 SAE activations equal 238×64. All 1,134 active feature IDs have descriptions.
+- The implementation directly returns an `N×16384` sparse tensor of flattened non-padding tokens. This run first produced `240×16384`, including `<cls>/<eos>`; the runner used the special-token mapping to filter it into the exported `238×16384` residue matrix. `B×T×16384` is only a conceptual reshape for illustrations.
+- For each input representation, the SAE computes the mean and standard deviation over its 2560 channels on the fly, each with shape N×1, then applies z-score normalization. It does not use saved layer-level μ/σ. `W_enc` and `W_dec` are independent, and the only bias is the 2560-dimensional `b_dec`. This run used `normalize_sae=False`; CSV exports preserve raw TopK activations.
+- The ranking is a candidate ordering from frozen inference and the `.7/.3` heuristic in this run. GFP chromophore sites S65/Y66/G67 rank 225/223/211, with scores -0.387662/-0.357207/-0.300504.
 
-## Top 10（精确来源：candidate_sites_all.csv）
+## Scoring verification
+
+- `conditional_preference` has 28 positive and 210 negative values. After clipping with `max(m,0)`, both median and MAD are zero, so the code falls back to standard deviation with scale=0.2061997034.
+- `contextual_novelty` uses a MAD scale of 0.0270947251. Recalculation gives a maximum absolute error of 4.44e-16 for the constraint component and 1.78e-15 for the total score.
+- Consequently, all 210 negative-margin positions have a constraint z-score of zero; their relative ordering is determined by the novelty component.
+
+## Top 10 (exact source: candidate_sites_all.csv)
 
 | rank | site | margin | novelty | score |
 |---:|---|---:|---:|---:|
@@ -33,11 +37,11 @@
 | 9 | L195 | 0.359375 | 0.114928 | 1.408839 |
 | 10 | G174 | 0.335938 | 0.106153 | 1.232124 |
 
-## 1EMA 编号审计
+## 1EMA numbering audit
 
-1EMA mmCIF 的 `pdbx_poly_seq_scheme` 只有 236 个 polymer records。其条目文字说明 65、66、67 三个残基在结构中由一个 `CRO 66` 取代。审计将 `CRO` 展开为 `TYG`、将 `MSE` 按一字母 `M` 对齐；得到与输入 GFP 同为 238 aa，差异仅为 S65T 和 Q80R。
+The 1EMA mmCIF `pdbx_poly_seq_scheme` contains only 236 polymer records. Its entry description states that residues 65, 66, and 67 are replaced in the structure by one `CRO 66` record. The audit expands `CRO` into `TYG` and aligns `MSE` as the one-letter code `M`. The resulting sequence has the same 238-aa length as the input GFP, differing only at S65T and Q80R.
 
-| 输入位点 | polymer label_seq_id | author residue | PDB component | 当前 RCSB feature context | coordinates |
+| Input site | Polymer label_seq_id | Author residue | PDB component | Archived RCSB feature context | Coordinates |
 |---|---:|---:|---|---|---|
 | M1 | 1 | — | MSE | unassigned secondary structure (polymer labels 1-3) | unmodeled residue |
 | G20 | 20 | 20 | GLY | sheet (polymer labels 12-22) | modeled |
@@ -53,20 +57,22 @@
 | G174 | 172 | 174 | GLY | unassigned secondary structure (polymer labels 169-173) | modeled |
 | L195 | 193 | 195 | LEU | unassigned secondary structure (polymer labels 186-196) | modeled |
 
-输入 1–64 使用 label=input。输入 65–67 全部映射到 `CRO` label 65 / author 66。输入 68–238 使用 label=input−2，author/PDB 序号=input。当前 RCSB feature 的区间以 polymer label 表示。直接把 label_seq_id 当作输入 FASTA 坐标会把发色团三残基压成一条记录，并使其后坐标偏移两位。
+Input positions 1–64 use label=input. Input positions 65–67 all map to `CRO` label 65 / author 66. Input positions 68–238 use label=input−2, with author/PDB numbering=input. RCSB feature intervals in the archived snapshot use polymer labels. Treating label_seq_id directly as input FASTA coordinates would collapse the three chromophore residues into one record and shift subsequent coordinates by two positions.
 
-## 兼容性与科学边界
+## Compatibility and scientific limitations
 
-- 本次固定旧 checkpoint `biohub/esmc-6b-2024-12@ffd268e4…`。Biohub 的现行卡将该 checkpoint 列为 GitHub-package-format 的向后兼容版本，并推荐 `biohub/ESMC-6B` 的 HF-compatible weights。
-- runner 的 legacy key adapter 覆盖七类旧 LayerNorm/MLP suffix。已安装 loader 在 missing、unexpected 或 dropped checkpoint entries 存在时抛出错误；完成状态支持该加载路径通过。run metadata 没有独立的 tensor-count 报告，也没有与官方基线的数值 parity 实验。
-- 本机 ESM 包报告 Transformer Engine、xformers、flash-attn 与 flash-attn RoPE 缺失，运行记录为 SDPA/pure-PyTorch fallback。最终 H 为 final LayerNorm state；SAE layer 60 位于中间 residual stream。当前工件支持本实现下的 GFP 控制观察；跨实现等价性仍待基线校准。
-- 缓存 checkpoint config 的 `mask_token_id=31` 是与官方 active tokenizer 不一致的遗留序列化字段，并未控制本次 masked input。跨实现的数值/MLM parity 仍待用匹配基线校准；该待办不表示本次掩码 token 错误。
-- SAE 原始 activation 用于 feature 查表，跨 feature ID 的数值未提供校准置信度。发色团低 rank 也需要保留为该控制的观察，不能外推为生物重要性判断。
+- This run pins the legacy checkpoint `biohub/esmc-6b-2024-12@ffd268e4…`. At audit time, Biohub's model card described it as a backward-compatible GitHub-package-format checkpoint and recommended the HF-compatible weights in `biohub/ESMC-6B`.
+- The runner's legacy key adapter covers seven categories of old LayerNorm/MLP suffixes. The installed loader raises an error when missing, unexpected, or dropped checkpoint entries exist; successful completion supports that this loading path passed. Run metadata contains neither a separate tensor-count report nor a numerical parity experiment against an official baseline.
+- The local ESM package reported that Transformer Engine, xformers, flash-attn, and flash-attn RoPE were unavailable. The run records SDPA/pure-PyTorch fallbacks. Final `H` is the final LayerNorm state; SAE layer 60 reads an intermediate residual stream. The artifacts support GFP control observations under this implementation; equivalence across implementations still requires baseline calibration.
+- The cached checkpoint config's `mask_token_id=31` is a legacy serialized field inconsistent with the active official tokenizer. It did not control this run's masked inputs. Numerical/MLM parity across implementations still requires a matched baseline; this outstanding task does not imply that this run used an incorrect mask token.
+- Raw SAE activations are used for feature lookup. Values across feature IDs are not calibrated confidence scores. Low chromophore ranks must remain an observation of this control, not a conclusion about biological importance.
 
-## 文件与来源
+## Files and provenance
 
-- 数据总表：[evidence.json](E:\ESMC\ppt_handoff_20260906\evidence.json)
-- 图表数据：[normalized_slide_data.json](E:\ESMC\ppt_handoff_20260906\normalized_slide_data.json)
-- RCSB mmCIF：`E:\ESMC\ppt_handoff_20260906\sources\audit\1EMA.cif`，SHA256 `b7d583424b6f960a7421fd4c88cdb6bbb10025667cd863d8cd14f70bc775aceb`
-- RCSB current chain API：`E:\ESMC\ppt_handoff_20260906\sources\audit\1EMA.A.current-api.json`，SHA256 `a4bc2ef24504ac3f82c61fc0607a25922760c28dbe452768a7fb7e671f6f5837`
-- 运行元数据：`E:\ESMC\runs\run_20260905T135554Z_smoke_gfp\run_metadata.json`
+- Evidence table: [evidence.json](../presentation/data/evidence.json)
+- Chart data: [normalized_slide_data.json](../presentation/data/normalized_slide_data.json)
+- RCSB mmCIF: [1EMA.cif](../audit/data/1EMA.cif), SHA256 `b7d583424b6f960a7421fd4c88cdb6bbb10025667cd863d8cd14f70bc775aceb`
+- Archived RCSB chain API response: [1EMA.A.current-api.json](../audit/data/1EMA.A.current-api.json), SHA256 `a4bc2ef24504ac3f82c61fc0607a25922760c28dbe452768a7fb7e671f6f5837`
+- Run metadata: [run_metadata.json](../examples/gfp/run_metadata.json)
+
+These files originated in `E:\ESMC\ppt_handoff_20260906` and `E:\ESMC\runs\run_20260905T135554Z_smoke_gfp`; the links above point to the repository copies.

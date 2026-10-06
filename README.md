@@ -1,77 +1,81 @@
-# ESMC + SAE 蛋白残基分析 Demo
+# ESMC + SAE Protein Residue Analysis Demo
 
-这是一个已经在 GFP 上跑通的本地分析 pipeline：输入一条蛋白质 FASTA，使用 ESMC 6B 生成残基上下文向量、逐位遮挡评分，并用预训练 SAE 读取每个残基激活的稀疏特征。项目用于查看模型中的结构与功能线索，当前定位是研究 demo。
+Language: **English** | [简体中文](README.zh-CN.md)
 
-## 它做什么
+A local analysis pipeline demonstrated on GFP: given a single protein FASTA sequence, ESMC 6B produces contextual residue embeddings and per-position masked scores, while a pretrained sparse autoencoder (SAE) extracts active features for each residue. This is a research demo for exploring structural and functional signals in the model.
+
+## What it does
 
 ```mermaid
 flowchart LR
-    A[单条蛋白 FASTA] --> B[ESMC 6B]
-    B --> C[残基上下文向量]
-    B --> D[逐位遮挡预测]
-    C --> E[局部新颖度]
-    D --> F[候选残基评分]
+    A[Single protein FASTA] --> B[ESMC 6B]
+    B --> C[Contextual residue embeddings]
+    B --> D[Per-position masked predictions]
+    C --> E[Local novelty]
+    D --> F[Candidate residue scores]
     E --> F
-    A --> G[重新加载 ESMC + layer 60 SAE]
-    G --> H[位置 × feature ID × activation]
-    H --> I[连接官方 feature 描述]
+    A --> G[Reload ESMC + layer 60 SAE]
+    G --> H[Position × feature ID × activation]
+    H --> I[Join official feature descriptions]
 ```
 
-- **残基表示**：默认导出最后的 hidden state，得到 `H ∈ R^(L×2560)`，同时保存平均池化向量和 token 映射。
-- **候选排名**：逐位遮挡，计算模型对原残基相对于最佳替代残基的 log-probability margin，再与局部向量新颖度组合。
-- **SAE 解释**：读取第 60 层表示，在 16,384 个特征中每个残基保留 64 项；按 feature ID 连接 Biohub 的描述表。
-- **可核查输出**：保存完整 CSV、NPZ、模型修订、依赖版本、GPU 状态和运行参数。每次运行使用新目录。
+- **Residue representations:** export the final hidden state by default, giving `H ∈ R^(L×2560)`, together with a mean-pooled vector and token mapping.
+- **Candidate ranking:** mask each position, calculate the log-probability margin between the observed residue and the best alternative, and combine it with local embedding novelty.
+- **SAE interpretation:** read layer 60 representations, retain 64 of 16,384 features per residue, and join Biohub's description table by feature ID.
+- **Auditable outputs:** save complete CSV and NPZ files, model revisions, dependency versions, GPU snapshots, and run arguments. Each run gets a new directory.
 
-这里有两套坐标：蛋白残基位置是 1-based FASTA 编号，SAE feature ID 是官方字典索引。一个残基可以激活多个特征，一个特征也可以出现在多个残基或蛋白中。特征描述提供 property 的语义线索，激活值本身没有被校准成生物学置信度。
+There are two different coordinates: residue positions use 1-based FASTA numbering, while SAE feature IDs index the official feature dictionary. One residue can activate multiple features, and one feature can occur at multiple residues or in multiple proteins. Descriptions provide semantic clues about properties; activation values are not calibrated biological confidence scores.
 
-## 先看现成 Demo：无需 GPU
+## Inspect the included demo: no GPU required
 
-仓库包含 2026-09-05 UTC 的完整 GFP 示例。使用 Python 3.12 执行：
+The repository includes the complete GFP example from 2026-09-05 UTC. With Python 3.12, run:
 
 ```bash
 python scripts/verify_demo.py
 ```
 
-这个命令仅用 Python 标准库，检查序列编号、238 行评分、评分公式、NPZ 形状、SAE 稀疏度和源脚本哈希。运行后打印检查结果和前五名。
+This command uses only the Python standard library. It checks sequence numbering, all 238 scoring rows, the scoring formula, NPZ shapes, SAE sparsity, and the source-script hash, then prints the checks and the top five sites.
 
-可以直接查看：
+Browse the outputs directly:
 
-- [GFP 全位置评分](examples/gfp/candidate_sites_all.csv)
-- [Top10](examples/gfp/top_candidate_sites.csv)
-- [残基 SAE 激活](examples/gfp/sae_residue_activations.csv)
-- [特征描述与活跃位置](examples/gfp/sae_feature_summary.csv)
-- [修正后的结构审计](docs/GFP_AUDIT.md)
-- [34 页中文 PPT](presentation/output/ESMC_6B_SAE_GFP_20260906.pptx) 与 [中文讲稿](presentation/notes/total.md)
+- [All GFP position scores](examples/gfp/candidate_sites_all.csv)
+- [Top 10 sites](examples/gfp/top_candidate_sites.csv)
+- [Residue-level SAE activations](examples/gfp/sae_residue_activations.csv)
+- [Feature descriptions and active positions](examples/gfp/sae_feature_summary.csv)
+- [Corrected structural audit](docs/GFP_AUDIT.md)
+- [34-slide Chinese PowerPoint](presentation/output/ESMC_6B_SAE_GFP_20260906.pptx) and [Chinese speaker notes](presentation/notes/total.md)
 
-![GFP 的条件偏好、新颖度与综合评分](examples/gfp/site_scores.png)
+The presentation, speaker notes, and slide-specific teaching materials remain in Chinese. Project documentation is available in both languages through the links at the top of each document.
 
-## 本次 GFP 结果
+![GFP conditional preference, novelty, and combined scores](examples/gfp/site_scores.png)
 
-| 项目 | 已完成的示例结果 |
+## Results from this GFP run
+
+| Item | Completed example result |
 |---|---|
-| 输入 | UniProt P42212 GFP，238 aa |
-| 残基表示 | `238×2560`，导出 state 80；FP16 保存 |
-| 遮挡扫描 | 238 个位置，batch size 1 |
-| SAE | layer 60，16,384 features，TopK 64 |
-| 激活导出 | 15,232 条记录，1,134 个活跃 feature ID |
-| 排名前两位 | M1：10.985227；G24：3.422573 |
-| 已知发色团对照 | S65、Y66、G67 的 rank 分别为 225、223、211 |
+| Input | UniProt P42212 GFP, 238 aa |
+| Residue representations | `238×2560`, exported state 80; saved as FP16 |
+| Masked scan | 238 positions, batch size 1 |
+| SAE | Layer 60, 16,384 features, TopK 64 |
+| Activation export | 15,232 records, 1,134 active feature IDs |
+| Top two sites | M1: 10.985227; G24: 3.422573 |
+| Known chromophore control | S65, Y66, and G67 rank 225, 223, and 211, respectively |
 
-例如 G24 的代表性特征 F13094 和 F9528 涉及 β 链连接、loop/turn 语义，可以据此提出局部结构假设。当前排名只使用遮挡偏好与新颖度；SAE 在排名后提供解释。
+For example, representative G24 features F13094 and F9528 have descriptions related to β-strand connections and loops/turns, suggesting local structural hypotheses. The current ranking uses only masked preference and novelty; SAE provides interpretation after ranking.
 
-发色团位点在本次排名后段，说明这个组合分数仍需要功能参照和数值校准。当前证据支持流程完成及该实现下的观察，功能或机制结论需要独立验证。1EMA 是 S65T/Q80R 变体：其 CRO 合并记录对应输入 65–67 位，后续 polymer label 比输入编号小 2；完整映射见审计文档。
+The chromophore sites rank near the bottom in this run, so the combined score still needs functional controls and numerical calibration. The evidence supports completion of the pipeline and observations under this implementation; functional or mechanistic conclusions need independent validation. 1EMA is an S65T/Q80R variant: its merged CRO record corresponds to input positions 65–67, and subsequent polymer labels are two less than input positions. See the audit for the complete mapping.
 
-## 自己跑一条序列
+## Run your own sequence
 
-需要 Python 3.12、支持 FP16/BF16 的 NVIDIA CUDA GPU、足够的内存及模型下载空间。现有 GFP 示例在 RTX 5080 Laptop 16 GB、BF16、SDPA 下完成；显存记录是采样点，长序列的需求需要实际测量。
+You need Python 3.12, an NVIDIA CUDA GPU supporting FP16/BF16, sufficient memory, and storage for the model downloads. The included GFP example ran on an RTX 5080 Laptop 16 GB using BF16 and SDPA. Recorded GPU memory values are snapshots; requirements for longer sequences need to be measured.
 
-新建独立环境，在仓库根目录安装依赖：
+Create a separate environment and install dependencies from the repository root:
 
 ```bash
 python -m venv .venv
 ```
 
-Windows PowerShell：
+Windows PowerShell:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
@@ -80,7 +84,7 @@ python -m pip install -r requirements.txt
 python pipeline/run_esmc_site_pipeline.py --smoke-test --sae
 ```
 
-Linux：
+Linux:
 
 ```bash
 source .venv/bin/activate
@@ -89,55 +93,55 @@ python -m pip install -r requirements.txt
 python pipeline/run_esmc_site_pipeline.py --smoke-test --sae
 ```
 
-处理自己的标准氨基酸单条 FASTA：
+For a single FASTA sequence using standard amino acids:
 
 ```bash
 python pipeline/run_esmc_site_pipeline.py --fasta path/to/protein.fasta --sae
 ```
 
-默认缓存放在仓库的 `hf_cache/`，新结果写入 `runs/run_<UTC时间>_<序列名称>/`。运行参数可通过 `--help` 查看。模型仓库需要较大的下载空间，实际数据由 Hugging Face 获取。
+The default cache is `hf_cache/` in the repository; new results go to `runs/run_<UTC_timestamp>_<sequence_name>/`. Use `--help` to inspect run options. Model files are downloaded from Hugging Face and require substantial disk space.
 
-严格复现示例的模型修订时：
+To use the same model revisions as the included example:
 
 ```bash
 python pipeline/run_esmc_site_pipeline.py --smoke-test --sae --model-revision ffd268e4c72c4c9757066cd74e9a793bf7b24771 --sae-revision 99752fe6e4d25fbb26f887db2d9225e7a577da73
 ```
 
-`requirements.txt` 固定了已运行环境的直接依赖与 Biohub ESM 源码提交。完整观测环境见 [运行 metadata](examples/gfp/run_metadata.json)。当前 runner 使用旧版 `biohub/esmc-6b-2024-12` 权重和显式 key adapter；官方匹配推理的数值一致性基线仍待建立。
+`requirements.txt` pins the direct dependencies and Biohub ESM source commit used in the completed run. See the [run metadata](examples/gfp/run_metadata.json) for the full observed environment. The runner uses legacy `biohub/esmc-6b-2024-12` weights with an explicit key adapter; a numerical parity baseline against matched official inference has not yet been established.
 
-## 评分公式
+## Scoring formula
 
 ```text
-margin_i = log p(原残基 | 其余序列) − max log p(其他19种标准氨基酸 | 其余序列)
-novelty_i = 1 − cos(h_i, 左右各5位邻居的平均向量)
+margin_i = log p(observed residue | rest of sequence) − max log p(other 19 standard amino acids | rest of sequence)
+novelty_i = 1 − cos(h_i, mean embedding of up to 5 neighbors on each side, excluding i)
 score_i = 0.7 × robust_z(max(margin_i, 0)) + 0.3 × robust_z(novelty_i)
 robust_z(u) = (u − median(u)) / (1.4826 × MAD(u))
 ```
 
-MAD 接近零时回退到标准差，两者均接近零时输出零向量。权重和窗口可设置，排序范围是当前蛋白内的位置。在这个 GFP 示例中，210 个负 margin 被裁剪为 0，它们之间的次序完全由新颖度决定。SAE 激活按 raw 数值导出，逐 feature max/IDF 标度默认关闭。
+When MAD is near zero, the implementation falls back to standard deviation; if both are near zero, it returns a zero vector. Weights and the neighborhood window are configurable. Ranking compares positions within the current protein. In this GFP example, 210 negative margins were clipped to zero, so their relative ordering depends entirely on novelty. SAE activations are exported as raw values; per-feature max/IDF scaling is disabled by default.
 
-## 代码与目录
+## Code and repository layout
 
 ```text
-pipeline/                 已运行的 ESMC + SAE 主脚本与 GFP 输入
-scripts/verify_demo.py     标准库示例检查器
-examples/gfp/             真实运行结果与 metadata
-docs/GFP_AUDIT.md          编号、评分与特征解释审计
-audit/                    证据生成脚本及 1EMA 参照数据
-presentation/src/         PPT 构建、检查和打包代码
-presentation/data/        课件使用的结构化证据与讲稿 JSON
-presentation/notes/       34 页中文讲稿
-presentation/output/      已生成的 PPT、讲稿及质量报告
+pipeline/                 Completed-run ESMC + SAE runner and GFP input
+scripts/verify_demo.py     Standard-library example validator
+examples/gfp/             Actual run outputs and metadata
+docs/GFP_AUDIT.md          Numbering, scoring, and feature interpretation audit
+audit/                    Evidence generation script and 1EMA reference data
+presentation/src/         PowerPoint build, verification, and packaging scripts
+presentation/data/        Structured slide evidence and speaker-note JSON
+presentation/notes/       Chinese speaker notes for all 34 slides
+presentation/output/      Generated PowerPoint, notes, and quality reports
 ```
 
-推理主脚本保留了历史运行版本的原始字节。课件和证据生成脚本作为当时的完整源码归档，仍含本机路径；重新构建课件需要原来的 Codex Artifact Tool 运行时及路径适配，详情见 [课件源码说明](presentation/README.md)。预生成的 PPT 可以直接下载查看。
+The inference runner preserves the exact bytes of the historical run version. Presentation and evidence-generation scripts are archived in full and still contain local paths. Rebuilding the presentation requires the original Codex Artifact Tool runtime and path adaptation; see the [presentation source notes](presentation/README.md). The generated PowerPoint can be downloaded directly.
 
-## 上游来源
+## Upstream sources
 
-- [Biohub ESM 源码](https://github.com/Biohub/esm)，已运行提交 `bf343ba264b650dff7a073643725f9aaa1fdbe8d`
-- [历史 ESMC 6B 权重](https://huggingface.co/biohub/esmc-6b-2024-12)
+- [Biohub ESM source](https://github.com/Biohub/esm), run commit `bf343ba264b650dff7a073643725f9aaa1fdbe8d`
+- [Legacy ESMC 6B weights](https://huggingface.co/biohub/esmc-6b-2024-12)
 - [Layer 60 SAE](https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384)
-- [官方 SAE 特征描述](https://huggingface.co/datasets/biohub/ESMC-SAE-Features)，描述由 agent 生成
-- [UniProt P42212](https://www.uniprot.org/uniprotkb/P42212) 与 [PDB 1EMA](https://www.rcsb.org/structure/1EMA)
+- [Official SAE feature descriptions](https://huggingface.co/datasets/biohub/ESMC-SAE-Features), generated by agents
+- [UniProt P42212](https://www.uniprot.org/uniprotkb/P42212) and [PDB 1EMA](https://www.rcsb.org/structure/1EMA)
 
-模型、数据和第三方依赖各自的许可证与使用条件由对应上游项目规定。
+Licenses and usage conditions for models, data, and third-party dependencies are governed by their respective upstream projects.
