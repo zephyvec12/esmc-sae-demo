@@ -1,0 +1,12 @@
+* text=auto
+*.py text eol=lf
+*.mjs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.ps1 text eol=crlf
+*.pptx binary
+*.npz binary
+*.png binary
+# Preserve the exact source bytes used by the archived run metadata SHA-256.
+pipeline/run_esmc_site_pipeline.py -text

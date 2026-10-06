@@ -1,0 +1,12 @@
+{
+  "audit_name": "esmc_gfp_pptx_xml_content_audit",
+  "pptx_path": "E:\\ESMC\\ppt_handoff_20260906\\output\\ESMC_6B_SAE_GFP_20260906.pptx",
+  "pptx_modified": false,
+  "expected_slide_count": 34,
+  "slide_count": 34,
+  "notes_count": 34,
+  "scientific_checks": true,
+  "error_count": 0,
+  "warning_count": 0,
+  "findings": []
+}

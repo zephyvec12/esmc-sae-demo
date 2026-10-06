@@ -1,0 +1,13 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+# Direct dependencies observed in the successful Python 3.12 / CUDA 12.8 run.
+torch==2.11.0+cu128
+transformers==4.57.6
+accelerate==1.14.0
+huggingface_hub==0.36.2
+safetensors==0.8.0
+numpy==2.5.2
+pandas==3.0.5
+pyarrow==25.0.1
+matplotlib==3.11.1
+tabulate==0.10.0
+esm @ git+https://github.com/Biohub/esm.git@bf343ba264b650dff7a073643725f9aaa1fdbe8d

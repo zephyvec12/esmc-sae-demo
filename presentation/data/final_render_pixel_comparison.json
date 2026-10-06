@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "render-pixel-comparison.v1",
+  "totalSlides": 34,
+  "byteIdenticalSlides": 25,
+  "maxChangedPixelRatio": 0.02182074652777778,
+  "maxMeanChannelDelta": 1.4427308485243056,
+  "slides": [
+    {
+      "slide": 1,
+      "file": "slide-01.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 2,
+      "file": "slide-02.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 3,
+      "file": "slide-03.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 4,
+      "file": "slide-04.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 5,
+      "file": "slide-05.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 6,
+      "file": "slide-06.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 7,
+      "file": "slide-07.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 8,
+      "file": "slide-08.png",
+      "changedPixels": 1073,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.001164279513888889,
+      "maxChannelDelta": 44,
+      "meanChannelDelta": 0.022923448350694445
+    },
+    {
+      "slide": 9,
+      "file": "slide-09.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 10,
+      "file": "slide-10.png",
+      "changedPixels": 3515,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.003814019097222222,
+      "maxChannelDelta": 209,
+      "meanChannelDelta": 0.20556776258680556
+    },
+    {
+      "slide": 11,
+      "file": "slide-11.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 12,
+      "file": "slide-12.png",
+      "changedPixels": 181,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.00019639756944444444,
+      "maxChannelDelta": 44,
+      "meanChannelDelta": 0.003493381076388889
+    },
+    {
+      "slide": 13,
+      "file": "slide-13.png",
+      "changedPixels": 827,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.0008973524305555555,
+      "maxChannelDelta": 46,
+      "meanChannelDelta": 0.01840576171875
+    },
+    {
+      "slide": 14,
+      "file": "slide-14.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 15,
+      "file": "slide-15.png",
+      "changedPixels": 881,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.0009559461805555556,
+      "maxChannelDelta": 90,
+      "meanChannelDelta": 0.02707790798611111
+    },
+    {
+      "slide": 16,
+      "file": "slide-16.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 17,
+      "file": "slide-17.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 18,
+      "file": "slide-18.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 19,
+      "file": "slide-19.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 20,
+      "file": "slide-20.png",
+      "changedPixels": 9579,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.010393880208333333,
+      "maxChannelDelta": 235,
+      "meanChannelDelta": 0.7371931966145834
+    },
+    {
+      "slide": 21,
+      "file": "slide-21.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 22,
+      "file": "slide-22.png",
+      "changedPixels": 20007,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.021708984375,
+      "maxChannelDelta": 244,
+      "meanChannelDelta": 1.0439005533854167
+    },
+    {
+      "slide": 23,
+      "file": "slide-23.png",
+      "changedPixels": 20110,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.02182074652777778,
+      "maxChannelDelta": 244,
+      "meanChannelDelta": 1.4427308485243056
+    },
+    {
+      "slide": 24,
+      "file": "slide-24.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 25,
+      "file": "slide-25.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 26,
+      "file": "slide-26.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 27,
+      "file": "slide-27.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 28,
+      "file": "slide-28.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 29,
+      "file": "slide-29.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 30,
+      "file": "slide-30.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 31,
+      "file": "slide-31.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 32,
+      "file": "slide-32.png",
+      "changedPixels": 176,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0.00019097222222222223,
+      "maxChannelDelta": 89,
+      "meanChannelDelta": 0.00449951171875
+    },
+    {
+      "slide": 33,
+      "file": "slide-33.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    },
+    {
+      "slide": 34,
+      "file": "slide-34.png",
+      "changedPixels": 0,
+      "totalPixels": 921600,
+      "changedPixelRatio": 0,
+      "maxChannelDelta": 0,
+      "meanChannelDelta": 0
+    }
+  ]
+}

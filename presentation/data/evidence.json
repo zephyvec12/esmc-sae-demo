@@ -1,0 +1,1389 @@
+{
+  "audit_id": "ESMC-GFP-20260906",
+  "scope": "Completed ESMC GFP smoke run evidence audit; no inference, environment modification, or result regeneration was performed.",
+  "run": {
+    "status": "completed",
+    "command_line": ".\\run_esmc_site_pipeline.py --smoke-test --sae",
+    "started_at_utc": "2026-09-05T13:55:55Z",
+    "completed_at_utc": "2026-09-05T13:56:52Z",
+    "input_header": "GFP_smoke_test|238_residues|official-model-card-example",
+    "protein_length": 238,
+    "run_directory": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp",
+    "script_path": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py",
+    "script_sha256": "ef10ff3ea08b1e4bfe9776ca05d9410b7fbeb106cb1ecfbfb08e72e7d95c54ff"
+  },
+  "reproducibility": {
+    "model_id": "biohub/esmc-6b-2024-12",
+    "model_requested_revision": "main",
+    "model_resolved_revision": "ffd268e4c72c4c9757066cd74e9a793bf7b24771",
+    "model_checkpoint_total_parameters": 6352005184,
+    "dtype": "torch.bfloat16",
+    "device_map": "auto",
+    "attn_implementation": "sdpa",
+    "masked_batch_size": 1,
+    "novelty_window": 5,
+    "weights": {
+      "constraint": 0.7,
+      "novelty": 0.3
+    },
+    "gpu": {
+      "cuda_available": true,
+      "device": "cuda:0",
+      "gpu_name": "NVIDIA GeForce RTX 5080 Laptop GPU",
+      "gpu_compute_capability": "12.0",
+      "gpu_total_mib": 16302.6,
+      "gpu_free_mib": 15067.0,
+      "gpu_allocated_mib": 0.0,
+      "gpu_reserved_mib": 0.0
+    },
+    "gpu_after_model_load": {
+      "cuda_available": true,
+      "device": "cuda:0",
+      "gpu_name": "NVIDIA GeForce RTX 5080 Laptop GPU",
+      "gpu_compute_capability": "12.0",
+      "gpu_total_mib": 16302.6,
+      "gpu_free_mib": 2356.8,
+      "gpu_allocated_mib": 12215.5,
+      "gpu_reserved_mib": 12338.0
+    },
+    "gpu_after_dense_model_release": {
+      "cuda_available": true,
+      "device": "cuda:0",
+      "gpu_name": "NVIDIA GeForce RTX 5080 Laptop GPU",
+      "gpu_compute_capability": "12.0",
+      "gpu_total_mib": 16302.6,
+      "gpu_free_mib": 14993.0,
+      "gpu_allocated_mib": 9.1,
+      "gpu_reserved_mib": 24.0
+    },
+    "package_versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "4.57.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "0.36.2",
+      "safetensors": "0.8.0",
+      "esm": "3.4.1",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.1",
+      "tabulate": "0.10.0"
+    },
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "tokenization": {
+    "tokenizer_class": "esm.models.esmc.EsmcTokenizer",
+    "input_residue_length": 238,
+    "encoded_token_length": 240,
+    "actual_example": {
+      "sequence": "MSK",
+      "tokens": [
+        "<cls>",
+        "M",
+        "S",
+        "K",
+        "<eos>"
+      ],
+      "input_ids": [
+        0,
+        20,
+        8,
+        15,
+        2
+      ],
+      "special_tokens_mask": [
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "special_ids": {
+      "cls_bos": 0,
+      "pad": 1,
+      "eos": 2,
+      "unk": 3,
+      "chain_break": 31,
+      "mask": 32
+    },
+    "tokenizer_active_vocab_size": 33,
+    "model_config_vocab_size": 64,
+    "validated_residue_token_indices": {
+      "count": 238,
+      "first": 1,
+      "last": 238
+    },
+    "mask_id_audit": {
+      "legacy_checkpoint_config_mask_token_id": 31,
+      "runtime_tokenizer_mask_token_id": 32,
+      "runtime_resolution": "runner instantiates EsmcTokenizer and selects tokenizer.mask_token_id before model.config.mask_token_id",
+      "official_tokenizer_source": {
+        "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\tokenizer.py",
+        "sha256": "79a138f6ea35e16e229b11596d4e82824b6c9b18ac5d4230526e162badf485d9",
+        "official_url": "https://raw.githubusercontent.com/Biohub/esm/bf343ba264b650dff7a073643725f9aaa1fdbe8d/esm/models/esmc/tokenizer.py",
+        "installed_package_origin": {
+          "url": "https://github.com/Biohub/esm.git",
+          "vcs_info": {
+            "commit_id": "bf343ba264b650dff7a073643725f9aaa1fdbe8d",
+            "requested_revision": "main",
+            "vcs": "git"
+          }
+        },
+        "evidence": "SEQUENCE_VOCAB documents | as 31 and <mask> as 32, calls this the canonical vocabulary used by all ESMC checkpoints, and says indices are hard-coded into model weights"
+      },
+      "conclusion": "config.json mask_token_id=31 is stale/inconsistent serialized metadata for this interface; it did not control the actual masked input in this run. Cross-implementation numerical parity remains a separate pending comparison."
+    }
+  },
+  "architecture": {
+    "checkpoint_config_raw": {
+      "architectures": [
+        "ESMCForMaskedLM"
+      ],
+      "classifier_dropout": 0.1,
+      "d_model": 2560,
+      "dtype": "float32",
+      "initializer_range": 0.02,
+      "mask_token_id": 31,
+      "model_type": "esmc",
+      "n_heads": 40,
+      "n_layers": 80,
+      "pad_token_id": 1,
+      "tie_word_embeddings": false,
+      "transformers_version": "4.57.6",
+      "vocab_size": 64
+    },
+    "resolved": {
+      "hidden_size": 2560,
+      "num_hidden_layers": 80,
+      "num_attention_heads": 40,
+      "head_dimension": 64,
+      "swiglu_intermediate_size": 6912,
+      "residual_scaling_factor": 1.4907119849998598,
+      "attention": "pre-LN fused QKV; Q/K LayerNorm across full d_model=2560 before 40x64 head reshape; RoPE; SDPA in this run",
+      "ffn": "pre-LN SwiGLU; linear projections bias=False",
+      "bias_audit": {
+        "linear_qkv_out_and_ffn_projections": false,
+        "q_and_k_layer_norm": false,
+        "final_layer_norm": false,
+        "fallback_qkv_and_ffn_pre_layer_norm": true,
+        "wording_boundary": "Do not generalize linear bias=False into an assertion that every LayerNorm in the implementation lacks a bias parameter."
+      },
+      "final_norm": "LayerNorm(hidden_size=2560, bias=False)",
+      "exported_hidden_state": "state 80 / final normalized state"
+    },
+    "embedding_archive": {
+      "H": {
+        "shape": [
+          238,
+          2560
+        ],
+        "dtype": "float16"
+      },
+      "protein_embedding": {
+        "shape": [
+          2560
+        ],
+        "dtype": "float32"
+      },
+      "positions": {
+        "shape": [
+          238
+        ],
+        "dtype": "int32"
+      },
+      "residue_token_indices": {
+        "shape": [
+          238
+        ],
+        "dtype": "int32"
+      },
+      "selected_hidden_state_index": {
+        "shape": [],
+        "dtype": "int32",
+        "value": 80
+      }
+    }
+  },
+  "scoring": {
+    "definition": "s = 0.7 * robust_z(max(conditional_preference, 0)) + 0.3 * robust_z(contextual_novelty)",
+    "conditional_preference_definition": "masked-LM log p(observed amino acid) minus log p(best alternative among the 20 standard amino acids)",
+    "conditional_preference_counts": {
+      "positive": 28,
+      "zero": 0,
+      "negative": 210
+    },
+    "conditional_preference_raw_stats": {
+      "minimum": -2.9765626192092896,
+      "maximum": 2.8046874403953552,
+      "mean": -0.6579369349139077,
+      "median": -0.5390625,
+      "mad": 0.3671875,
+      "mad_scale": 0.5443921875,
+      "std": 0.680031609813933,
+      "selected_scale": 0.5443921875,
+      "uses_std_fallback": false,
+      "quantiles": {
+        "p10": -1.5016601920127868,
+        "p25": -0.998046875,
+        "p75": -0.2392578125,
+        "p90": 0.06484375000000009
+      }
+    },
+    "conditional_preference_clipped_stats": {
+      "minimum": 0.0,
+      "maximum": 2.8046874403953552,
+      "mean": 0.04003085584199729,
+      "median": 0.0,
+      "mad": 0.0,
+      "mad_scale": 0.0,
+      "std": 0.2061997034028977,
+      "selected_scale": 0.2061997034028977,
+      "uses_std_fallback": true,
+      "quantiles": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "p90": 0.06484375000000009
+      }
+    },
+    "contextual_novelty_stats": {
+      "minimum": 0.0507430434226989,
+      "maximum": 0.2300912141799926,
+      "mean": 0.10242889207952159,
+      "median": 0.09787204861640925,
+      "mad": 0.018275141716003397,
+      "mad_scale": 0.027094725108146634,
+      "std": 0.030412329767827928,
+      "selected_scale": 0.027094725108146634,
+      "uses_std_fallback": false,
+      "quantiles": {
+        "p10": 0.06876367330551147,
+        "p25": 0.08090947568416595,
+        "p75": 0.11768068373203269,
+        "p90": 0.14220997095108034
+      }
+    },
+    "candidate_score_stats": {
+      "minimum": -0.5218248755681956,
+      "maximum": 10.985226822041271,
+      "mean": 0.18635002072737897,
+      "median": 0.03507745284528725,
+      "mad": 0.2198592259474299,
+      "mad_scale": 0.32596328838965954,
+      "std": 0.8728111453541219,
+      "selected_scale": 0.32596328838965954,
+      "uses_std_fallback": false,
+      "quantiles": {
+        "p10": -0.3222956704086919,
+        "p25": -0.17980288138556053,
+        "p75": 0.2653409236813031,
+        "p90": 0.7329798420019935
+      }
+    },
+    "histograms": {
+      "conditional_preference": {
+        "bin_edges": [
+          -2.9765626192092896,
+          -2.398437613248825,
+          -1.8203126072883606,
+          -1.2421876013278963,
+          -0.6640625953674317,
+          -0.08593758940696716,
+          0.49218741655349696,
+          1.070312422513962,
+          1.648437428474426,
+          2.22656243443489,
+          2.8046874403953552
+        ],
+        "counts": [
+          7,
+          3,
+          32,
+          62,
+          98,
+          31,
+          4,
+          0,
+          0,
+          1
+        ]
+      },
+      "clipped_conditional_preference": {
+        "bin_edges": [
+          0.0,
+          0.28046874403953553,
+          0.5609374880790711,
+          0.8414062321186067,
+          1.1218749761581421,
+          1.4023437201976776,
+          1.6828124642372133,
+          1.9632812082767488,
+          2.2437499523162843,
+          2.52421869635582,
+          2.8046874403953552
+        ],
+        "counts": [
+          226,
+          9,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "contextual_novelty": {
+        "bin_edges": [
+          0.0507430434226989,
+          0.06867786049842826,
+          0.08661267757415764,
+          0.104547494649887,
+          0.12248231172561638,
+          0.14041712880134574,
+          0.1583519458770751,
+          0.1762867629528045,
+          0.19422158002853385,
+          0.2121563971042632,
+          0.2300912141799926
+        ],
+        "counts": [
+          24,
+          55,
+          67,
+          42,
+          22,
+          14,
+          8,
+          4,
+          1,
+          1
+        ]
+      },
+      "candidate_score": {
+        "bin_edges": [
+          -0.5218248755681956,
+          0.6288802941927512,
+          1.7795854639536979,
+          2.9302906337146446,
+          4.0809958034755915,
+          5.2317009732365385,
+          6.3824061429974845,
+          7.5331113127584315,
+          8.683816482519378,
+          9.834521652280324,
+          10.985226822041271
+        ],
+        "counts": [
+          209,
+          23,
+          4,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "constraint_component_recomputed_max_abs_error": 4.440892098500626e-16,
+    "score_recomputed_max_abs_error": 1.7763568394002505e-15,
+    "interpretation": "After clipping, 210 negative margins share a zero constraint component; their rank differences are driven by novelty, while the 28 positive margins retain a nonzero constraint component."
+  },
+  "results": {
+    "top10": [
+      {
+        "rank": 1,
+        "position": 1,
+        "residue": "M",
+        "residue_token_index": 1,
+        "wild_type_log_probability": -0.3650084137916565,
+        "best_alternative_residue": "N",
+        "best_alternative_log_probability": -3.169695854187012,
+        "conditional_preference": 2.8046874403953552,
+        "amino_acid_distribution_entropy": 1.4481879472732544,
+        "contextual_novelty": 0.2300912141799926,
+        "constraint_component_z": 13.601801525947012,
+        "novelty_component_z": 4.879885846261218,
+        "model_candidate_score": 10.985226822041271
+      },
+      {
+        "rank": 2,
+        "position": 24,
+        "residue": "G",
+        "residue_token_index": 24,
+        "wild_type_log_probability": -1.7216696739196775,
+        "best_alternative_residue": "K",
+        "best_alternative_log_probability": -2.5029196739196777,
+        "conditional_preference": 0.78125,
+        "amino_acid_distribution_entropy": 2.7862651348114014,
+        "contextual_novelty": 0.1674522757530212,
+        "constraint_component_z": 3.788802733985994,
+        "novelty_component_z": 2.568035913222497,
+        "model_candidate_score": 3.422572687756945
+      },
+      {
+        "rank": 3,
+        "position": 26,
+        "residue": "K",
+        "residue_token_index": 26,
+        "wild_type_log_probability": -1.894105315208435,
+        "best_alternative_residue": "S",
+        "best_alternative_log_probability": -2.3862929344177246,
+        "conditional_preference": 0.4921876192092895,
+        "amino_acid_distribution_entropy": 2.7907214164733887,
+        "contextual_novelty": 0.1711013317108154,
+        "constraint_component_z": 2.386946300536594,
+        "novelty_component_z": 2.7027136389875395,
+        "model_candidate_score": 2.4816765020718776
+      },
+      {
+        "rank": 4,
+        "position": 20,
+        "residue": "G",
+        "residue_token_index": 20,
+        "wild_type_log_probability": -1.9291226863861084,
+        "best_alternative_residue": "K",
+        "best_alternative_log_probability": -2.5072476863861084,
+        "conditional_preference": 0.578125,
+        "amino_acid_distribution_entropy": 2.8274929523468018,
+        "contextual_novelty": 0.130428671836853,
+        "constraint_component_z": 2.803714023149636,
+        "novelty_component_z": 1.2015852934656577,
+        "model_candidate_score": 2.323075404244442
+      },
+      {
+        "rank": 5,
+        "position": 40,
+        "residue": "G",
+        "residue_token_index": 40,
+        "wild_type_log_probability": -1.9521070718765257,
+        "best_alternative_residue": "S",
+        "best_alternative_log_probability": -2.5107007026672363,
+        "conditional_preference": 0.5585936307907104,
+        "amino_acid_distribution_entropy": 2.8435964584350586,
+        "contextual_novelty": 0.1350928544998169,
+        "constraint_component_z": 2.708993376674569,
+        "novelty_component_z": 1.373728861792965,
+        "model_candidate_score": 2.3084140222100875
+      },
+      {
+        "rank": 6,
+        "position": 91,
+        "residue": "G",
+        "residue_token_index": 91,
+        "wild_type_log_probability": -1.8813543319702148,
+        "best_alternative_residue": "D",
+        "best_alternative_log_probability": -2.342291831970215,
+        "conditional_preference": 0.4609375,
+        "amino_acid_distribution_entropy": 2.777251720428467,
+        "contextual_novelty": 0.126571238040924,
+        "constraint_component_z": 2.2353936130517367,
+        "novelty_component_z": 1.0592168516183131,
+        "model_candidate_score": 1.8825405846217091
+      },
+      {
+        "rank": 7,
+        "position": 45,
+        "residue": "K",
+        "residue_token_index": 45,
+        "wild_type_log_probability": -1.724841833114624,
+        "best_alternative_residue": "D",
+        "best_alternative_log_probability": -2.068591833114624,
+        "conditional_preference": 0.34375,
+        "amino_acid_distribution_entropy": 2.551518440246582,
+        "contextual_novelty": 0.1413111090660095,
+        "constraint_component_z": 1.6670732029538375,
+        "novelty_component_z": 1.6032294210853333,
+        "model_candidate_score": 1.6479200683932862
+      },
+      {
+        "rank": 8,
+        "position": 173,
+        "residue": "D",
+        "residue_token_index": 173,
+        "wild_type_log_probability": -2.1522369384765625,
+        "best_alternative_residue": "G",
+        "best_alternative_log_probability": -2.3319244384765625,
+        "conditional_preference": 0.1796875,
+        "amino_acid_distribution_entropy": 2.8275508880615234,
+        "contextual_novelty": 0.1708021163940429,
+        "constraint_component_z": 0.8714246288167787,
+        "novelty_component_z": 2.691670333857919,
+        "model_candidate_score": 1.4174983403291206
+      },
+      {
+        "rank": 9,
+        "position": 195,
+        "residue": "L",
+        "residue_token_index": 195,
+        "wild_type_log_probability": -2.082301378250122,
+        "best_alternative_residue": "I",
+        "best_alternative_log_probability": -2.441676378250122,
+        "conditional_preference": 0.359375,
+        "amino_acid_distribution_entropy": 2.856095314025879,
+        "contextual_novelty": 0.1149277091026306,
+        "constraint_component_z": 1.7428492576335577,
+        "novelty_component_z": 0.6294826914886518,
+        "model_candidate_score": 1.4088392877900855
+      },
+      {
+        "rank": 10,
+        "position": 174,
+        "residue": "G",
+        "residue_token_index": 174,
+        "wild_type_log_probability": -2.107412099838257,
+        "best_alternative_residue": "L",
+        "best_alternative_log_probability": -2.443349599838257,
+        "conditional_preference": 0.3359375,
+        "amino_acid_distribution_entropy": 2.8709936141967773,
+        "contextual_novelty": 0.1061534881591796,
+        "constraint_component_z": 1.6291851756139777,
+        "novelty_component_z": 0.3056476679396306,
+        "model_candidate_score": 1.2321239233116734
+      }
+    ],
+    "chromophore_65_66_67": [
+      {
+        "rank": 225,
+        "position": 65,
+        "residue": "S",
+        "residue_token_index": 65,
+        "wild_type_log_probability": -2.6446399688720703,
+        "best_alternative_residue": "K",
+        "best_alternative_log_probability": -2.4180774688720703,
+        "conditional_preference": -0.2265625,
+        "amino_acid_distribution_entropy": 2.875799655914306,
+        "contextual_novelty": 0.0628600716590881,
+        "constraint_component_z": 0.0,
+        "novelty_component_z": -1.2922063913759358,
+        "model_candidate_score": -0.3876619174127807
+      },
+      {
+        "rank": 223,
+        "position": 66,
+        "residue": "Y",
+        "residue_token_index": 66,
+        "wild_type_log_probability": -3.9855237007141113,
+        "best_alternative_residue": "N",
+        "best_alternative_log_probability": -1.4669688940048218,
+        "conditional_preference": -2.5185548067092896,
+        "amino_acid_distribution_entropy": 2.557724952697754,
+        "contextual_novelty": 0.065610647201538,
+        "constraint_component_z": 0.0,
+        "novelty_component_z": -1.1906893790618702,
+        "model_candidate_score": -0.357206813718561
+      },
+      {
+        "rank": 211,
+        "position": 67,
+        "residue": "G",
+        "residue_token_index": 67,
+        "wild_type_log_probability": -2.8739027976989746,
+        "best_alternative_residue": "L",
+        "best_alternative_log_probability": -2.2567152976989746,
+        "conditional_preference": -0.6171875,
+        "amino_acid_distribution_entropy": 2.896814346313477,
+        "contextual_novelty": 0.0707318186759948,
+        "constraint_component_z": 0.0,
+        "novelty_component_z": -1.0016794720037252,
+        "model_candidate_score": -0.3005038416011175
+      }
+    ]
+  },
+  "sae": {
+    "model_id": "biohub/ESMC-6B-sae-layer60-k64-codebook16384",
+    "resolved_revision": "99752fe6e4d25fbb26f887db2d9225e7a577da73",
+    "layer": 60,
+    "config": {
+      "available_layers": [
+        60
+      ],
+      "codebook_dim": 16384,
+      "d_model": 2560,
+      "k": 64,
+      "model_type": "esmc_sae",
+      "transformers_version": "4.57.6"
+    },
+    "activation_count_metadata": 15232,
+    "summary": {
+      "candidate_rows": 238,
+      "candidate_columns": [
+        "rank",
+        "position",
+        "residue",
+        "residue_token_index",
+        "wild_type_log_probability",
+        "best_alternative_residue",
+        "best_alternative_log_probability",
+        "conditional_preference",
+        "amino_acid_distribution_entropy",
+        "contextual_novelty",
+        "constraint_component_z",
+        "novelty_component_z",
+        "model_candidate_score"
+      ],
+      "positions_are_exact_1_to_238": true,
+      "ranks_are_unique_1_to_238": true,
+      "residue_tokens_are_exact_1_to_238": true,
+      "residue_string_matches_fasta": true,
+      "embedding_archive": {
+        "H": {
+          "shape": [
+            238,
+            2560
+          ],
+          "dtype": "float16"
+        },
+        "protein_embedding": {
+          "shape": [
+            2560
+          ],
+          "dtype": "float32"
+        },
+        "positions": {
+          "shape": [
+            238
+          ],
+          "dtype": "int32"
+        },
+        "residue_token_indices": {
+          "shape": [
+            238
+          ],
+          "dtype": "int32"
+        },
+        "selected_hidden_state_index": {
+          "shape": [],
+          "dtype": "int32",
+          "value": 80
+        }
+      },
+      "sae_activation_rows": 15232,
+      "sae_positions_with_activations": 238,
+      "sae_activations_per_position": [
+        64
+      ],
+      "sae_unique_active_features": 1134,
+      "feature_summary_rows": 1134,
+      "feature_summary_unique_ids": 1134,
+      "feature_summary_nonempty_descriptions": 1134,
+      "feature_summary_generic_descriptions": 11,
+      "activation_range": [
+        0.74609375,
+        34.25
+      ]
+    },
+    "implementation_audit": {
+      "source": {
+        "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\sae.py",
+        "sha256": "80ef3480b2aa0c5b2ee4d2cbefbf3e5db77679d7e0f34545a6cd43d2b849f30f"
+      },
+      "representation_normalization": {
+        "scope": "each input representation independently along its final d_model axis",
+        "input_shape": "N x 2560",
+        "mean_and_std_shape": "N x 1",
+        "formula": "x = (x - mean(x, dim=-1, keepdim=True)) / (std(x, dim=-1, keepdim=True) + 1e-5)",
+        "saved_layer_mean_or_std": false
+      },
+      "feature_tensor_layout": {
+        "returned_layout": "N x 16384 sparse tensor after flattening non-padding batch/token rows",
+        "raw_shape_this_run": [
+          240,
+          16384
+        ],
+        "raw_N_definition": "B=1 and all T=240 tokens are non-padding, including <cls> and <eos>",
+        "exported_residue_shape": [
+          238,
+          16384
+        ],
+        "export_rule": "runner keeps only token indices 1..238 matched through special_tokens_mask; the two special-token rows are omitted",
+        "warning": "B x T x 16384 can be used only as a conceptual reshape in a diagram; it is not the direct SAE tensor layout returned by this implementation"
+      },
+      "encoder_decoder": {
+        "W_enc_shape": [
+          2560,
+          16384
+        ],
+        "W_dec_shape": [
+          16384,
+          2560
+        ],
+        "encoder_bias": false,
+        "decoder_bias_shape": [
+          2560
+        ],
+        "encoder_and_decoder_weights_tied": false,
+        "activation": "ReLU followed by TopK(k=64, dim=-1)"
+      },
+      "per_feature_post_scale": {
+        "idf_and_max_shape": [
+          16384
+        ],
+        "formula_when_enabled": "(features / layer.max) * layer.idf",
+        "normalize_sae_default": false,
+        "applied_to_this_run": false,
+        "source": {
+          "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\model.py",
+          "sha256": "70d37cd873b9a80a534f6a88f6e4f3b016a8e15fdb13cf5f0c4696ccdd6b5267"
+        }
+      }
+    },
+    "representative_features": {
+      "1": [
+        {
+          "position": 1,
+          "feature_id": 8545,
+          "activation": 9.5625,
+          "feature_global_max_activation": 9.5625,
+          "active_position_count": 5,
+          "positions": "1;2;3;68;238",
+          "description_summary": "Detector of accessible peptide chain termini—primarily the extreme N-terminus (initiator methionine and immediate neighbors) in flexible, unstructured tails; position-specific rather than residue-specific—with occasional weak recognition of the C-terminus; common but not universal."
+        },
+        {
+          "position": 1,
+          "feature_id": 11504,
+          "activation": 3.4375,
+          "feature_global_max_activation": 3.4375,
+          "active_position_count": 1,
+          "positions": "1",
+          "description_summary": "Initiator methionine at the very start of the polypeptide chain (M1), i.e., the translation start residue, independent of protein family, taxonomy, membrane association, or presence of signal/leader/propeptide regions; often annotated as post-translationally removed and typically situated in a flexible, coil-like N-terminus."
+        }
+      ],
+      "20": [
+        {
+          "position": 20,
+          "feature_id": 6818,
+          "activation": 3.96875,
+          "feature_global_max_activation": 3.96875,
+          "active_position_count": 15,
+          "positions": "10;20;31;33;35;40;51;67;91;116;127;134;154;232;235",
+          "description_summary": "Residue-level detector for small side chains (primarily Gly and Ala, occasionally Ser/Thr) at beta-strand positions, with a strong propensity for the repeating strand sites of right-handed parallel beta-helix (PbH1) solenoids common in carbohydrate-active, surface/secreted proteins; the same preference also appears in beta-sheets of diverse soluble enzyme folds, indicating a structural rather than catalytic motif."
+        }
+      ],
+      "24": [
+        {
+          "position": 24,
+          "feature_id": 13094,
+          "activation": 4.6875,
+          "feature_global_max_activation": 4.6875,
+          "active_position_count": 9,
+          "positions": "4;24;41;52;138;147;160;185;227",
+          "description_summary": "Residue-level detection of β-strand-connecting loop/turn positions (β-hairpin/coil apex residues) across diverse β-sheet–rich domains, with a strong preference for Gly and Asx (Asp/Asn) and occasional His/Thr at the turn."
+        },
+        {
+          "position": 24,
+          "feature_id": 9528,
+          "activation": 4.53125,
+          "feature_global_max_activation": 4.53125,
+          "active_position_count": 13,
+          "positions": "22;24;39;103;105;118;136;147;158;160;188;198;228",
+          "description_summary": "Glycine‑centered tight β‑turn/hairpin loop motif at sheet–sheet or coil‑to‑β transitions, typically an Asx/Ser/Thr–Gly sequence (often D–G, sometimes P/S/T preceding and Lys nearby), marking short, well‑ordered loops that link adjacent β‑strands across diverse folds"
+        }
+      ],
+      "26": [
+        {
+          "position": 26,
+          "feature_id": 3586,
+          "activation": 5.15625,
+          "feature_global_max_activation": 5.15625,
+          "active_position_count": 13,
+          "positions": "6;22;26;28;106;129;136;140;162;187;200;214;230",
+          "description_summary": "Short, solvent-exposed loop/turn motifs (beta-turn/hinge segments) used as binding or catalytic micro-sites across many folds; typically proline- and charge/hydrophobe-rich SLiMs rather than a family-specific signature, hence frequent in extracellular/repeat-rich proteins but present broadly in soluble enzymes and regulators"
+        }
+      ],
+      "40": [
+        {
+          "position": 40,
+          "feature_id": 6141,
+          "activation": 5.15625,
+          "feature_global_max_activation": 5.15625,
+          "active_position_count": 30,
+          "positions": "6;8;10;12;14;16;23;25;27;38;40;42;92;104;106;108;119;121;137;139;146;148;150;159;161;163;199;213;215;217",
+          "description_summary": "Residues at beta-strand starts and edge strands (loop-to–beta-strand junctions) in non‑transmembrane regions; the feature marks short stretches within beta-sheets and immediately preceding coils, consistent with generic beta-structure preferences rather than a specific function"
+        },
+        {
+          "position": 40,
+          "feature_id": 7156,
+          "activation": 3.265625,
+          "feature_global_max_activation": 5.53125,
+          "active_position_count": 13,
+          "positions": "36;38;40;104;117;135;146;148;159;172;174;198;227",
+          "description_summary": "Beta-strand–connecting loop/turn residues (beta-hairpin/strand–strand linkers) in beta-sheet–rich domains, often enriched for Gly and acidic residues; a generic structural motif rather than a function-specific signal"
+        }
+      ],
+      "45": [
+        {
+          "position": 45,
+          "feature_id": 3904,
+          "activation": 3.234375,
+          "feature_global_max_activation": 3.234375,
+          "active_position_count": 15,
+          "positions": "13;15;17;30;43;45;109;111;124;140;151;153;164;166;220",
+          "description_summary": "Beta-strand secondary-structure signal: the feature marks residues within ordered β-sheets (DSSP class E), often in extracellular/luminal domains but broadly across taxa and functions; enrichment for polar/charged side chains within strands rather than specific catalytic motifs"
+        }
+      ],
+      "91": [
+        {
+          "position": 91,
+          "feature_id": 16214,
+          "activation": 2.65625,
+          "feature_global_max_activation": 3.875,
+          "active_position_count": 19,
+          "positions": "7;9;11;13;15;24;26;39;41;91;93;105;107;120;147;160;162;214;216",
+          "description_summary": "A general secondary-structure signal for short beta-strands and their flanking turns/coil in non-transmembrane regions (extracellular or cytosolic), with a preference for small/flexible or polar/charged residues; strongly depleted in alpha-helices, especially membrane-spanning helices."
+        }
+      ],
+      "173": [
+        {
+          "position": 173,
+          "feature_id": 14747,
+          "activation": 2.71875,
+          "feature_global_max_activation": 2.71875,
+          "active_position_count": 7,
+          "positions": "3;76;90;103;133;159;173",
+          "description_summary": "Acidic/polar residues in short coil/turn loops that connect beta-strands within repeat-based beta-sheet scaffolds—most prominently the surface loops of WD40 beta-propeller blades and MORN repeats; the feature flags periodic Asp/Glu/Asn/Ser/Thr positions in these inter-strand loops, with occasional weaker hits to analogous loops in unrelated enzymes."
+        }
+      ],
+      "174": [
+        {
+          "position": 174,
+          "feature_id": 7156,
+          "activation": 2.953125,
+          "feature_global_max_activation": 5.53125,
+          "active_position_count": 13,
+          "positions": "36;38;40;104;117;135;146;148;159;172;174;198;227",
+          "description_summary": "Beta-strand–connecting loop/turn residues (beta-hairpin/strand–strand linkers) in beta-sheet–rich domains, often enriched for Gly and acidic residues; a generic structural motif rather than a function-specific signal"
+        }
+      ],
+      "195": [
+        {
+          "position": 195,
+          "feature_id": 16243,
+          "activation": 7.96875,
+          "feature_global_max_activation": 8.5,
+          "active_position_count": 19,
+          "positions": "7;15;18;42;44;53;60;119;125;137;141;178;194;195;201;207;220;221;236",
+          "description_summary": "Generic detector of leucine side chains in alpha-helical contexts (including transmembrane and soluble helices), with occasional weaker responses to other hydrophobics; largely indifferent to specific functional motifs or protein class."
+        },
+        {
+          "position": 195,
+          "feature_id": 5474,
+          "activation": 7.78125,
+          "feature_global_max_activation": 7.78125,
+          "active_position_count": 11,
+          "positions": "12;53;55;57;74;88;177;186;191;195;210",
+          "description_summary": "Intrinsic-disorder/low-complexity coil detector: marks residues in intrinsically disordered regions (low pLDDT, coil/flexible segments), with a bias toward proline-associated positions (often the residue immediately preceding Pro, e.g., S/T-P), commonly in terminal tails and flexible linkers across diverse proteins."
+        }
+      ],
+      "65": [
+        {
+          "position": 65,
+          "feature_id": 627,
+          "activation": 7.1875,
+          "feature_global_max_activation": 8.4375,
+          "active_position_count": 14,
+          "positions": "2;28;30;65;72;86;108;146;147;175;202;203;205;208",
+          "description_summary": "Generic serine detector: the feature marks serine residues, with weaker affinity for threonine (and occasionally proline), and is especially prominent in low-complexity S/T-rich stretches; it is context- and structure-agnostic and does not correspond to a specific functional motif."
+        }
+      ],
+      "66": [
+        {
+          "position": 66,
+          "feature_id": 6579,
+          "activation": 10.5625,
+          "feature_global_max_activation": 10.5625,
+          "active_position_count": 11,
+          "positions": "39;66;74;92;106;143;145;151;182;200;237",
+          "description_summary": "Sequence-level detector for tyrosine residue identity (aromatic Tyr recognition), largely context-independent but with frequent emphasis on tyrosines positioned near Cys/His in C2H2-type zinc-finger motifs; weak cross-reactivity to other aromatics (Phe/Trp) and occasional neighboring acidic/amide residues."
+        }
+      ],
+      "67": [
+        {
+          "position": 67,
+          "feature_id": 9237,
+          "activation": 6.96875,
+          "feature_global_max_activation": 8.5,
+          "active_position_count": 22,
+          "positions": "4;10;20;24;31;33;35;40;51;67;91;104;116;127;134;138;160;174;189;191;228;232",
+          "description_summary": "Residue-identity detector for glycine (G), with a mild bias toward intrinsically disordered/low-complexity segments (often including very N-terminal residues); pan-taxonomic and function-agnostic, but activation is sparse and frequently absent, becoming detectable mainly in glycine-rich low-complexity contexts; occasional weak responses to other small/polar residues."
+        }
+      ]
+    },
+    "activation_interpretation_boundary": "Raw activations are sparse feature magnitudes. They support feature lookup; values across distinct feature IDs are not a calibrated cross-feature confidence scale."
+  },
+  "structure_mapping_1EMA": {
+    "source": {
+      "entry": "1EMA",
+      "chain": "A",
+      "cif_sha256": "b7d583424b6f960a7421fd4c88cdb6bbb10025667cd863d8cd14f70bc775aceb",
+      "api_sha256": "a4bc2ef24504ac3f82c61fc0607a25922760c28dbe452768a7fb7e671f6f5837"
+    },
+    "alignment_method": "Map FASTA positions to 1EMA polymer labels through the mmCIF poly_seq_scheme; expand CRO to TYG for construct-sequence comparison and map MSE to one-letter M.",
+    "polymer_residue_count": 236,
+    "input_length": 238,
+    "expanded_construct_length": 238,
+    "expanded_construct_differences_vs_input": [
+      {
+        "input_position": 65,
+        "input_residue": "S",
+        "1EMA_construct_residue": "T"
+      },
+      {
+        "input_position": 80,
+        "input_residue": "Q",
+        "1EMA_construct_residue": "R"
+      }
+    ],
+    "construct_annotations": [
+      "MSE maps to Met at one-letter level",
+      "1EMA contains S65T and Q80R relative to the supplied GFP sequence",
+      "input S65/Y66/G67 are represented by one CRO polymer residue: label_seq_id 65, author/PDB sequence number 66"
+    ],
+    "mapping_rule": {
+      "input_1_to_64": "label = input; author/PDB numbering matches where coordinates exist",
+      "input_65_to_67": "all three map to CRO label 65 / author 66",
+      "input_68_to_238": "label = input - 2; author/PDB sequence number = input"
+    },
+    "current_rcsb_feature_ranges_are_polymer_labels": {
+      "SHEET": [
+        {
+          "begin_label_seq_id": 158,
+          "end_label_seq_id": 168
+        },
+        {
+          "begin_label_seq_id": 174,
+          "end_label_seq_id": 185
+        },
+        {
+          "begin_label_seq_id": 90,
+          "end_label_seq_id": 98
+        },
+        {
+          "begin_label_seq_id": 103,
+          "end_label_seq_id": 113
+        },
+        {
+          "begin_label_seq_id": 116,
+          "end_label_seq_id": 126
+        },
+        {
+          "begin_label_seq_id": 12,
+          "end_label_seq_id": 22
+        },
+        {
+          "begin_label_seq_id": 25,
+          "end_label_seq_id": 36
+        },
+        {
+          "begin_label_seq_id": 41,
+          "end_label_seq_id": 48
+        },
+        {
+          "begin_label_seq_id": 218,
+          "end_label_seq_id": 225
+        },
+        {
+          "begin_label_seq_id": 197,
+          "end_label_seq_id": 205
+        },
+        {
+          "begin_label_seq_id": 146,
+          "end_label_seq_id": 150
+        }
+      ],
+      "HELIX_P": [
+        {
+          "begin_label_seq_id": 81,
+          "end_label_seq_id": 84
+        }
+      ],
+      "UNASSIGNED_SEC_STRUCT": [
+        {
+          "begin_label_seq_id": 1,
+          "end_label_seq_id": 3
+        },
+        {
+          "begin_label_seq_id": 9,
+          "end_label_seq_id": 11
+        },
+        {
+          "begin_label_seq_id": 23,
+          "end_label_seq_id": 24
+        },
+        {
+          "begin_label_seq_id": 37,
+          "end_label_seq_id": 40
+        },
+        {
+          "begin_label_seq_id": 49,
+          "end_label_seq_id": 56
+        },
+        {
+          "begin_label_seq_id": 61,
+          "end_label_seq_id": 66
+        },
+        {
+          "begin_label_seq_id": 70,
+          "end_label_seq_id": 80
+        },
+        {
+          "begin_label_seq_id": 85,
+          "end_label_seq_id": 89
+        },
+        {
+          "begin_label_seq_id": 99,
+          "end_label_seq_id": 102
+        },
+        {
+          "begin_label_seq_id": 114,
+          "end_label_seq_id": 115
+        },
+        {
+          "begin_label_seq_id": 127,
+          "end_label_seq_id": 145
+        },
+        {
+          "begin_label_seq_id": 151,
+          "end_label_seq_id": 157
+        },
+        {
+          "begin_label_seq_id": 169,
+          "end_label_seq_id": 173
+        },
+        {
+          "begin_label_seq_id": 186,
+          "end_label_seq_id": 196
+        },
+        {
+          "begin_label_seq_id": 206,
+          "end_label_seq_id": 217
+        },
+        {
+          "begin_label_seq_id": 226,
+          "end_label_seq_id": 236
+        }
+      ],
+      "UNOBSERVED_RESIDUE_XYZ": [
+        {
+          "begin_label_seq_id": 1,
+          "end_label_seq_id": 1
+        },
+        {
+          "begin_label_seq_id": 228,
+          "end_label_seq_id": 236
+        }
+      ],
+      "UNOBSERVED_ATOM_XYZ": [
+        {
+          "begin_label_seq_id": 6,
+          "end_label_seq_id": 6
+        },
+        {
+          "begin_label_seq_id": 26,
+          "end_label_seq_id": 26
+        },
+        {
+          "begin_label_seq_id": 52,
+          "end_label_seq_id": 52
+        },
+        {
+          "begin_label_seq_id": 99,
+          "end_label_seq_id": 99
+        },
+        {
+          "begin_label_seq_id": 105,
+          "end_label_seq_id": 105
+        },
+        {
+          "begin_label_seq_id": 120,
+          "end_label_seq_id": 120
+        },
+        {
+          "begin_label_seq_id": 122,
+          "end_label_seq_id": 122
+        },
+        {
+          "begin_label_seq_id": 129,
+          "end_label_seq_id": 130
+        },
+        {
+          "begin_label_seq_id": 154,
+          "end_label_seq_id": 156
+        },
+        {
+          "begin_label_seq_id": 160,
+          "end_label_seq_id": 160
+        },
+        {
+          "begin_label_seq_id": 210,
+          "end_label_seq_id": 210
+        },
+        {
+          "begin_label_seq_id": 212,
+          "end_label_seq_id": 212
+        }
+      ]
+    },
+    "top_and_control_mapping": [
+      {
+        "input_position": 1,
+        "input_residue": "M",
+        "polymer_label_seq_id": 1,
+        "pdb_seq_num": 1,
+        "author_seq_num": null,
+        "polymer_component": "MSE",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 1-3)",
+        "coordinate_flags": [
+          "unmodeled residue"
+        ],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 20,
+        "input_residue": "G",
+        "polymer_label_seq_id": 20,
+        "pdb_seq_num": 20,
+        "author_seq_num": 20,
+        "polymer_component": "GLY",
+        "secondary_structure_from_current_rcsb_feature": "sheet (polymer labels 12-22)",
+        "coordinate_flags": [],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 24,
+        "input_residue": "G",
+        "polymer_label_seq_id": 24,
+        "pdb_seq_num": 24,
+        "author_seq_num": 24,
+        "polymer_component": "GLY",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 23-24)",
+        "coordinate_flags": [],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 26,
+        "input_residue": "K",
+        "polymer_label_seq_id": 26,
+        "pdb_seq_num": 26,
+        "author_seq_num": 26,
+        "polymer_component": "LYS",
+        "secondary_structure_from_current_rcsb_feature": "sheet (polymer labels 25-36)",
+        "coordinate_flags": [
+          "partially modeled residue"
+        ],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 40,
+        "input_residue": "G",
+        "polymer_label_seq_id": 40,
+        "pdb_seq_num": 40,
+        "author_seq_num": 40,
+        "polymer_component": "GLY",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 37-40)",
+        "coordinate_flags": [],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 45,
+        "input_residue": "K",
+        "polymer_label_seq_id": 45,
+        "pdb_seq_num": 45,
+        "author_seq_num": 45,
+        "polymer_component": "LYS",
+        "secondary_structure_from_current_rcsb_feature": "sheet (polymer labels 41-48)",
+        "coordinate_flags": [],
+        "mapping_rule": "direct before chromophore composite"
+      },
+      {
+        "input_position": 65,
+        "input_residue": "S",
+        "polymer_label_seq_id": 65,
+        "pdb_seq_num": 66,
+        "author_seq_num": 66,
+        "polymer_component": "CRO",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 61-66)",
+        "coordinate_flags": [],
+        "mapping_rule": "CRO composite: input S65/Y66/G67 share one polymer label and one author residue"
+      },
+      {
+        "input_position": 66,
+        "input_residue": "Y",
+        "polymer_label_seq_id": 65,
+        "pdb_seq_num": 66,
+        "author_seq_num": 66,
+        "polymer_component": "CRO",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 61-66)",
+        "coordinate_flags": [],
+        "mapping_rule": "CRO composite: input S65/Y66/G67 share one polymer label and one author residue"
+      },
+      {
+        "input_position": 67,
+        "input_residue": "G",
+        "polymer_label_seq_id": 65,
+        "pdb_seq_num": 66,
+        "author_seq_num": 66,
+        "polymer_component": "CRO",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 61-66)",
+        "coordinate_flags": [],
+        "mapping_rule": "CRO composite: input S65/Y66/G67 share one polymer label and one author residue"
+      },
+      {
+        "input_position": 91,
+        "input_residue": "G",
+        "polymer_label_seq_id": 89,
+        "pdb_seq_num": 91,
+        "author_seq_num": 91,
+        "polymer_component": "GLY",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 85-89)",
+        "coordinate_flags": [],
+        "mapping_rule": "after chromophore composite: polymer label = input position - 2; author/PDB sequence number = input position"
+      },
+      {
+        "input_position": 173,
+        "input_residue": "D",
+        "polymer_label_seq_id": 171,
+        "pdb_seq_num": 173,
+        "author_seq_num": 173,
+        "polymer_component": "ASP",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 169-173)",
+        "coordinate_flags": [],
+        "mapping_rule": "after chromophore composite: polymer label = input position - 2; author/PDB sequence number = input position"
+      },
+      {
+        "input_position": 174,
+        "input_residue": "G",
+        "polymer_label_seq_id": 172,
+        "pdb_seq_num": 174,
+        "author_seq_num": 174,
+        "polymer_component": "GLY",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 169-173)",
+        "coordinate_flags": [],
+        "mapping_rule": "after chromophore composite: polymer label = input position - 2; author/PDB sequence number = input position"
+      },
+      {
+        "input_position": 195,
+        "input_residue": "L",
+        "polymer_label_seq_id": 193,
+        "pdb_seq_num": 195,
+        "author_seq_num": 195,
+        "polymer_component": "LEU",
+        "secondary_structure_from_current_rcsb_feature": "unassigned secondary structure (polymer labels 186-196)",
+        "coordinate_flags": [],
+        "mapping_rule": "after chromophore composite: polymer label = input position - 2; author/PDB sequence number = input position"
+      }
+    ],
+    "mapping_warning": "RCSB current structural feature ranges use polymer label_seq_id. Applying label_seq_id directly as the 238-residue FASTA position shifts post-CRO sites by two positions and treats the three-residue chromophore as one record."
+  },
+  "compatibility_and_scientific_boundaries": [
+    {
+      "claim": "The completed run documents a successfully executed path for the specified old checkpoint, environment, and input.",
+      "status": "supported by run metadata and completed artifacts"
+    },
+    {
+      "claim": "The mask supplied to every masked position in this run was the official ESMC <mask> token ID 32.",
+      "status": "supported by runner precedence plus the instantiated official tokenizer vocabulary; legacy config mask_token_id=31 did not control the run input"
+    },
+    {
+      "claim": "The legacy key adapter completed loading without a surfaced strict-loader error.",
+      "status": "supported indirectly: the installed loader raises for missing, unexpected, or dropped tensors; metadata does not record an independent per-tensor count"
+    },
+    {
+      "claim": "The adapter establishes output equivalence with the old GitHub implementation or the current recommended HF checkpoint.",
+      "status": "pending an explicit parity baseline; no such baseline is present in the run"
+    },
+    {
+      "claim": "Kernel fallback explains the GFP chromophore ranking result.",
+      "status": "unsupported; installed-package warnings describe numerical implementation differences, without a causal experiment for this result"
+    },
+    {
+      "claim": "Low rank of S65/Y66/G67 establishes low biological importance.",
+      "status": "unsupported; this control observes ranks under this implementation and scoring rule only"
+    },
+    {
+      "claim": "SAE descriptions establish GFP-specific function or cross-feature confidence.",
+      "status": "unsupported without independent biological validation and calibrated comparison"
+    }
+  ],
+  "compatibility_observations": {
+    "official_model_card_status": "biohub/esmc-6b-2024-12 is documented by Biohub as a backward-compatible GitHub-package-format checkpoint; the card recommends biohub/ESMC-6B HF-compatible weights.",
+    "runner_adapter": "Esmc6B2024ForMaskedLM remaps seven legacy LayerNorm/MLP key suffixes after the installed package normalizes the published layout.",
+    "loader_check": "Installed HubPreTrainedModel uses strict_keys=True and raises on missing, unexpected, or dropped checkpoint entries.",
+    "kernel_environment": "Installed esm emitted warnings that Transformer Engine, xformers, flash-attn, and flash-attn RoPE are unavailable; this run recorded SDPA and pure-PyTorch fallbacks.",
+    "mask_id_observation": "Cached legacy checkpoint config has mask_token_id=31, while the official instantiated EsmcTokenizer has chain_break=31 and <mask>=32. The runner uses tokenizer.mask_token_id first, so the actual run used valid token 32. Treat config=31 as stale/inconsistent serialization metadata; a broader cross-implementation numerical/MLM parity baseline remains pending and is not evidence of a wrong masked input."
+  },
+  "sources": [
+    {
+      "id": "RUN_METADATA",
+      "path": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+    },
+    {
+      "id": "CANDIDATES",
+      "path": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv"
+    },
+    {
+      "id": "SAE_ACTIVATIONS",
+      "path": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv"
+    },
+    {
+      "id": "SAE_FEATURE_SUMMARY",
+      "path": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+    },
+    {
+      "id": "RUNNER",
+      "path": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+    },
+    {
+      "id": "OFFICIAL_ESMC_TOKENIZER",
+      "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\tokenizer.py",
+      "url": "https://raw.githubusercontent.com/Biohub/esm/bf343ba264b650dff7a073643725f9aaa1fdbe8d/esm/models/esmc/tokenizer.py",
+      "installed_package_origin": {
+        "url": "https://github.com/Biohub/esm.git",
+        "vcs_info": {
+          "commit_id": "bf343ba264b650dff7a073643725f9aaa1fdbe8d",
+          "requested_revision": "main",
+          "vcs": "git"
+        }
+      }
+    },
+    {
+      "id": "INSTALLED_ESMC_SAE",
+      "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\sae.py",
+      "sha256": "80ef3480b2aa0c5b2ee4d2cbefbf3e5db77679d7e0f34545a6cd43d2b849f30f"
+    },
+    {
+      "id": "INSTALLED_ESMC_MODEL",
+      "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\model.py",
+      "sha256": "70d37cd873b9a80a534f6a88f6e4f3b016a8e15fdb13cf5f0c4696ccdd6b5267"
+    },
+    {
+      "id": "INSTALLED_ESMC_LAYERS",
+      "path": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\layers.py",
+      "sha256": "0a00c82ca33688ec0b5ace07db81c2d955fa48f13d69dc0687bb3adb797b1b3f"
+    },
+    {
+      "id": "1EMA_CIF",
+      "path": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif",
+      "url": "https://files.rcsb.org/download/1EMA.cif"
+    },
+    {
+      "id": "1EMA_CURRENT_API",
+      "path": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity_instance/1EMA/A"
+    },
+    {
+      "id": "HF_LEGACY_CARD",
+      "url": "https://huggingface.co/biohub/esmc-6b-2024-12"
+    },
+    {
+      "id": "HF_RECOMMENDED_CARD",
+      "url": "https://huggingface.co/biohub/ESMC-6B"
+    }
+  ]
+}

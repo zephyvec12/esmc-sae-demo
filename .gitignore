@@ -1,0 +1,38 @@
+# Python environments and generated code
+.venv/
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Model weights, caches, downloads and new runs
+hf_cache/
+.cache/
+runs/
+downloads/
+python312/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.exe
+*.dll
+offload/
+
+# Local runtimes, build diagnostics and credentials
+node_modules/
+.codex-finalizer/
+*_previews/
+_source_bundle_stage*/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+token*
+*.log
+.DS_Store
+Thumbs.db

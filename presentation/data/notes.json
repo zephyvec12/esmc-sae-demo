@@ -1,0 +1,1354 @@
+{
+  "_schema_version": "1.1",
+  "_source_map": {
+    "S01": {
+      "id": "S01",
+      "label": "本次运行元数据",
+      "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+    },
+    "S02": {
+      "id": "S02",
+      "label": "输入序列与导出表示",
+      "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+    },
+    "S03": {
+      "id": "S03",
+      "label": "本次候选评分表",
+      "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+    },
+    "S04": {
+      "id": "S04",
+      "label": "本次 SAE 激活与摘要",
+      "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+    },
+    "S05": {
+      "id": "S05",
+      "label": "本地运行实现",
+      "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+    },
+    "S06": {
+      "id": "S06",
+      "label": "独立审计结构化数据",
+      "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+    },
+    "S07": {
+      "id": "S07",
+      "label": "Biohub/esm 官方仓库",
+      "locator": "https://github.com/Biohub/esm"
+    },
+    "S08": {
+      "id": "S08",
+      "label": "旧 ESMC checkpoint 模型卡",
+      "locator": "https://huggingface.co/biohub/esmc-6b-2024-12"
+    },
+    "S09": {
+      "id": "S09",
+      "label": "当前 ESMC 6B 模型卡",
+      "locator": "https://huggingface.co/biohub/ESMC-6B"
+    },
+    "S10": {
+      "id": "S10",
+      "label": "ESMC 6B SAE layer60 模型卡",
+      "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+    },
+    "S11": {
+      "id": "S11",
+      "label": "ESMC SAE Features 数据集",
+      "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+    },
+    "S12": {
+      "id": "S12",
+      "label": "UniProt GFP_AEQVI / P42212",
+      "locator": "https://www.uniprot.org/uniprotkb/P42212"
+    },
+    "S13": {
+      "id": "S13",
+      "label": "RCSB PDB 1EMA",
+      "locator": "https://www.rcsb.org/structure/1EMA"
+    },
+    "S14": {
+      "id": "S14",
+      "label": "1EMA 原始 mmCIF 与 API 摘要",
+      "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+    },
+    "S15": {
+      "id": "S15",
+      "label": "独立证据审计报告",
+      "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+    },
+    "S16": {
+      "id": "S16",
+      "label": "兼容性与边界审计",
+      "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json (compatibility_observations; compatibility_and_scientific_boundaries; mask_id_audit)"
+    },
+    "S17": {
+      "id": "S17",
+      "label": "冻结设计要求",
+      "locator": "E:\\ESMC\\ppt_handoff_20260906\\design_spec.md; E:\\ESMC\\ppt_handoff_20260906\\spec_lock.md"
+    },
+    "S18": {
+      "id": "S18",
+      "label": "已安装 ESM SAE 实现",
+      "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\sae.py; E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\model.py"
+    },
+    "S19": {
+      "id": "S19",
+      "label": "官方 ESMC tokenizer",
+      "locator": "https://raw.githubusercontent.com/Biohub/esm/bf343ba264b650dff7a073643725f9aaa1fdbe8d/esm/models/esmc/tokenizer.py"
+    }
+  },
+  "01": {
+    "slide_number": 1,
+    "title": "一条 GFP 序列完成了 ESMC 6B 与 SAE 分析",
+    "notes": "这份分享追踪同一条 GFP 序列从字符到候选表的完整链路。输入为 238 个氨基酸，模型端的有效残基矩阵为 238×2560；随后逐位遮挡形成 238 次前向评分，并把第 60 层 SAE 的稀疏输出接到同一编号上。例如第 24 位 G 会同时拥有向量、条件偏好、新颖度和若干 feature ID。这里的完成指技术执行与可追溯产物已经落盘；科学解释仍需数值校准和外部功能参照。本次全程冻结前向，参数没有更新。下一页先把交付物和证据范围拆开。来源：S01、S02、S03、S04。",
+    "source_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      }
+    ]
+  },
+  "02": {
+    "slide_number": 2,
+    "title": "本次复现回答了计算流程与解释边界",
+    "notes": "上一页给出端到端对象，这页把可直接观察的量与解释边界并列。运行产出 H∈R^(238×2560)、238 行遮挡评分和 15,232 条 SAE 激活，后者恰为 238×64。例子是已知 SYG 三个位点也各有 64 个稀疏激活，却在当前综合排名的后段，说明激活、排名和生物学命名承担不同角色。当前排名仅由条件偏好 m 与新颖度 n 计算，SAE 用于事后解释。预训练阶段的梯度曾塑造模型和 SAE；本次只读取冻结权重。下一页沿同一残基标出五段计算与验证。来源：S01、S03、S04、S12、S13。",
+    "source_ids": [
+      "S01",
+      "S03",
+      "S04",
+      "S12",
+      "S13"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      }
+    ]
+  },
+  "03": {
+    "slide_number": 3,
+    "title": "同一残基贯穿五段计算与验证",
+    "notes": "现在把 GFP 的一个位置当作贯穿全篇的锚点。它先是 FASTA 中的 a_i，再映射到 token 位置 t_i，接着成为隐藏向量 h_i∈R^2560，随后得到 m_i、n_i、s_i 三个标量，最后关联到最多 64 个 SAE feature。以 G24 为例，i=24、t_i=24、h_i 是 H 的第 24 行，s_i 排第 2；这些对象的单位和形状在后续页面逐一展开。预训练的梯度路径停留在历史训练阶段，本次链路固定参数且只做前向。下一页先核对锚点序列和结构参考是否属于同一对象。来源：S01、S03、S04、S05、S12、S13。",
+    "source_ids": [
+      "S01",
+      "S03",
+      "S04",
+      "S05",
+      "S12",
+      "S13"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      }
+    ]
+  },
+  "04": {
+    "slide_number": 4,
+    "title": "测试序列与审阅版 GFP 完全一致",
+    "notes": "输入核对决定后面所有编号能否成立。FASTA 长度 L=238，MD5 为 F4AB4243622DDCC76E0B9B6D249B172A，与 UniProt P42212 的审阅序列一致；61–70 位窗口为 VTTFSYGVQC，其中 65–67 是 S、Y、G。例子中第 65 位的字符身份来自 FASTA，而 1EMA 是 S65T、Q80R 的结构参考，结构编号需另行映射。序列本身是离散长度 238 的对象，尚未进入 2560 维表示；本次没有训练或微调。下一页把每个输出文件绑定到这条固定序列。来源：S02、S12、S13、S14。",
+    "source_ids": [
+      "S02",
+      "S12",
+      "S13",
+      "S14"
+    ],
+    "sources": [
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      }
+    ]
+  },
+  "05": {
+    "slide_number": 5,
+    "title": "每个运行文件承担一个可核查任务",
+    "notes": "有了经核对的输入，接下来查看结果怎样保持可复查。FASTA 保存长度和字符；NPZ 保存 H∈R^(238×2560)、位置和 token 索引；all-sites CSV 保存每个 i 的评分分量；SAE CSV 保存 (position, feature_id, activation) 三元组。例子是 position=24 能从 CSV 回查为 G，并在 NPZ 的第 24 行取得 h_24。三项基本检查分别是行数 238、索引回到原字符、metadata 锁定版本。所有数值来自冻结前向，训练梯度只用于解释预训练参数如何形成。下一页进入最容易出错的 token 到残基映射。来源：S01、S02、S03、S04、S05。",
+    "source_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "06": {
+    "slide_number": 6,
+    "title": "特殊 token 掩码固定了残基编号",
+    "notes": "文件中的 position 能可靠回到 FASTA，依赖的是 special_tokens_mask 而非手写偏移。实际输入长度 T=240，玩具实测片段 [<cls>,M,S,K,<eos>] 的 ID 为 [0,20,8,15,2]，mask 为 [1,0,0,0,1]；mask 为 0 的 238 个位置依序组成 t_1 到 t_238。因而本次 t_24=24，但这个数来自实际 mask 和逐字符校验，可随 tokenizer 改变。token ID 是整数向量，后面才会查表成为浮点表示。参数在预训练时接受梯度，本次映射和前向均冻结。下一页读取这些残基位置的上下文化向量。来源：S01、S02、S05。",
+    "source_ids": [
+      "S01",
+      "S02",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "07": {
+    "slide_number": 7,
+    "title": "每个残基获得一个 2560 维上下文向量",
+    "notes": "上一页的 t_i 选定了 238 个有效位置，这页说明它们怎样成为 H。模型返回 state 80 后，按 t_i 取行得到 H∈R^(238×2560)，每一行 h_i 为一个残基吸收全序列上下文后的向量；protein_embedding 是沿 238 行求均值所得的 R^2560 向量。例子中 h_24 的 2560 个坐标保存在 H 的第 24 行，不能把单个坐标直接命名为某种性质。计算使用 BF16，H 以 FP16 保存，均值以 FP32 保存，三种精度承担不同存储与计算角色。预训练梯度曾更新 embedding 与 block 参数；本次冻结导出。下一页拆开 80 层如何反复更新 T×2560 的接口。来源：S01、S02、S05、S06。",
+    "source_ids": [
+      "S01",
+      "S02",
+      "S05",
+      "S06"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      }
+    ]
+  },
+  "08": {
+    "slide_number": 8,
+    "title": "80 层模型反复更新同一序列表示",
+    "notes": "H 的每一行来自同一套 80 层主干，而非一次查表结果。缓存 config 和本地实现给出宽度 d=2560、40 个头、每头 d_h=64、SwiGLU 中间宽度 6912；每层输入和输出保持 T×2560，本次 T=240。比如 40×64=2560，因此各头拼接后能回到残差主干的宽度。每层拥有自己的参数，预训练时损失梯度沿 80 个 block 回传；此处只载入冻结权重并导出最后 state 80。下一页把一层中最关键的三组投影写成可检查的矩阵乘法。来源：S01、S05、S06、S07、S09。",
+    "source_ids": [
+      "S01",
+      "S05",
+      "S06",
+      "S07",
+      "S09"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      },
+      {
+        "id": "S09",
+        "label": "当前 ESMC 6B 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B"
+      }
+    ]
+  },
+  "09": {
+    "slide_number": 9,
+    "title": "Q、K、V 分别学习匹配与内容变换",
+    "notes": "从层栈取一层输入 X∈R^(T×2560)，单头投影写作 Q=XW_Q、K=XW_K、V=XW_V，其中每个 W 的形状为 2560×64，故内维 2560 相消，三个输出均为 T×64。以第 24 行为例，x_24 乘 W_Q 得到长度 64 的 q_24，它向全部 Key 发起匹配；q_24 的任一坐标都由 2560 项输入坐标和参数权重相乘再求和。同一 W_Q 共享用于全部 T 行。实现把多头投影融合为无 bias 的 2560→3×2560 线性层，Q/K LayerNorm 先在 B×T×2560 的末维完成，再拆为 40×64 并施加 RoPE。W_Q、W_K、W_V 来自预训练，梯度可由 loss 经 Q、K、V 回传到它们；本次仅执行冻结前向。下一页把 QK 分数变成每行可读的权重。来源：S05、S06、S07。",
+    "source_ids": [
+      "S05",
+      "S06",
+      "S07"
+    ],
+    "sources": [
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      }
+    ]
+  },
+  "10": {
+    "slide_number": 10,
+    "title": "Softmax 将一行匹配分数归一化",
+    "notes": "Q、K 给出实数匹配分数后，Softmax 负责把同一 Query 的竞争关系变成权重。单头分数矩阵 S∈R^(T×T)，第 i 行固定 Query i，第 j 列对应 Key j；本模型先在 B×T×2560 的末维对 Q/K 做 LayerNorm，再拆为 40×64、施加 RoPE，并按头宽 64 缩放。玩具数值例子取 scores=[ln1,ln2,ln3]，指数为 [1,2,3]，归一化后 A=[1/6,2/6,3/6]，行和为 1；分母只沿 Key 列求和。真实 GFP 的 A 为 240×240，页面没有把玩具图冒充实测 attention。预训练中梯度经 Softmax 回到 Q/K 参数；本次只读。下一页用同一组 A 把 Value 汇成输出。来源：S05、S06、S07。",
+    "source_ids": [
+      "S05",
+      "S06",
+      "S07"
+    ],
+    "sources": [
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      }
+    ]
+  },
+  "11": {
+    "slide_number": 11,
+    "title": "注意力权重决定 Value 的加权组合",
+    "notes": "沿用上一页的三项权重，Attention 输出为 o_i=Σ_j A_ijv_j。玩具例子令 V=[[1,0],[0,2],[2,2]]，形状 3×2；用 [1/6,2/6,3/6] 左乘后，o=[7/6,5/3]，输出仍为二维。这个乘法消去的是来源 token 轴 3，保留 Query 行和 Value 的两个通道；每个权重会缩放 Value 的全部通道。一般情形中 A∈R^(T×T)、V∈R^(T×64)，得到 O∈R^(T×64)；40 个头拼接回 T×2560，再经 W_O 混合。权重描述信息路由，生物学意义需要独立证据。预训练梯度同时经过 A 与 V；本次保持冻结。下一页接着解释残差和门控如何保持这个宽度接口。来源：S05、S06、S07。",
+    "source_ids": [
+      "S05",
+      "S06",
+      "S07"
+    ],
+    "sources": [
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      }
+    ]
+  },
+  "12": {
+    "slide_number": 12,
+    "title": "残差和门控 FFN 维持深层计算接口",
+    "notes": "Attention 的 T×2560 输出先回到主干，再进入同形状的下一层。当前 block 采用 Pre-LN：Y=X+Attention(LN(X))/s，X_next=Y+SwiGLU(LN(Y))/s，s=√(80/36)=1.490712；融合 fc1 输出 13824 通道，门控支路与内容支路各为 6912 通道，逐元素相乘后投回 2560。例子中任一 token 的残差加法逐坐标相加，因此两项宽度都须为 2560；Attention branch 的 layernorm_qkv 与 FFN pre-LN 带 layer_norm_bias，Q/K LN 和 final LN 用 bias=False。LN、注意力和 FFN 参数在预训练中由交叉熵梯度更新，恒等残差为深层梯度提供直接通路；本次是冻结前向。下一页把这种历史训练目标与本地推理清楚分开。来源：S05、S06、S07。",
+    "source_ids": [
+      "S05",
+      "S06",
+      "S07"
+    ],
+    "sources": [
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      }
+    ]
+  },
+  "13": {
+    "slide_number": 13,
+    "title": "掩码预测通过交叉熵学习上下文",
+    "notes": "前面的 block 之所以形成上下文表示，来自预训练的掩码恢复目标。对被遮挡位置 i，输出头给出 z_i∈R^64，经 Softmax 得到类别分布 p_i；真实氨基酸标签 y_i 选择其中一类，损失为 −log p_i(y_i)。玩具数值例子中 p_y=0.7 时损失约 0.357，p_y=0.1 时约 2.303，且对 logit 的梯度为 p−y，参数更新可写作 θ←θ−η∇θL。该梯度依次更新输出头、80 层和 embedding；本地扫描随后从 64 类中取 20 个标准氨基酸重算分布。当前 GFP 运行使用 inference_mode，只做前向评分，没有局部 loss、反向或微调。下一页回到实际旧权重如何接入当前接口。来源：S05、S07、S08、S09。",
+    "source_ids": [
+      "S05",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "sources": [
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      },
+      {
+        "id": "S08",
+        "label": "旧 ESMC checkpoint 模型卡",
+        "locator": "https://huggingface.co/biohub/esmc-6b-2024-12"
+      },
+      {
+        "id": "S09",
+        "label": "当前 ESMC 6B 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B"
+      }
+    ]
+  },
+  "14": {
+    "slide_number": 14,
+    "title": "旧权重与当前接口通过键名适配加载",
+    "notes": "训练原理之后，说明本次权重来源与加载范围。运行锁定旧 checkpoint `biohub/esmc-6b-2024-12` 的 revision ffd268e4；官方当前入口使用 `biohub/ESMC-6B`。本地 adapter 对 7 类 legacy suffix 做一对一键名转换，并按 key/shape 加载。它检查载入路径和张量接口，输出仍为 T×2560；官方基线的逐元素数值校准待完成。缓存 config 的 mask_token_id=31 属于遗留序列化字段；官方 tokenizer 以 mask=32、chain_break=31 生成实际遮挡。跨实现输出与 MLM 数值待官方基线校准。安装环境走 SDPA，本次无梯度更新。下一页解释两阶段加载怎样适配显存。来源：S01、S05、S06、S08、S09、S16、S19。",
+    "source_ids": [
+      "S01",
+      "S05",
+      "S06",
+      "S08",
+      "S09",
+      "S16",
+      "S19"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      },
+      {
+        "id": "S08",
+        "label": "旧 ESMC checkpoint 模型卡",
+        "locator": "https://huggingface.co/biohub/esmc-6b-2024-12"
+      },
+      {
+        "id": "S09",
+        "label": "当前 ESMC 6B 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B"
+      },
+      {
+        "id": "S16",
+        "label": "兼容性与边界审计",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json (compatibility_observations; compatibility_and_scientific_boundaries; mask_id_audit)"
+      },
+      {
+        "id": "S19",
+        "label": "官方 ESMC tokenizer",
+        "locator": "https://raw.githubusercontent.com/Biohub/esm/bf343ba264b650dff7a073643725f9aaa1fdbe8d/esm/models/esmc/tokenizer.py"
+      }
+    ]
+  },
+  "15": {
+    "slide_number": 15,
+    "title": "分阶段加载让本次计算容纳于 16GB GPU",
+    "notes": "运行用两段加载控制显存。第一阶段载入 6B，处理 B=1、T=240 的前向、H∈R^(238×2560) 导出和 238 次遮挡；释放 dense model 后，再载入 6B 与 layer60 SAE，返回 N×16384 稀疏输出。本次无 padding，N=240 含 cls/eos；runner 筛选 residue token，输出 15,232 条长表记录，概念矩阵为 238×16384。例子是 GPU 采样：加载后 12,215.5 MiB（11.93 GiB），释放后 9.1 MiB，均为采样点。参数为 RTX 5080 Laptop、BF16、batch1、device_map auto、SDPA。两阶段均在 inference_mode 下冻结。下一页查看每次遮挡。来源：S01、S04、S05、S18。",
+    "source_ids": [
+      "S01",
+      "S04",
+      "S05",
+      "S18"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S18",
+        "label": "已安装 ESM SAE 实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\sae.py; E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\model.py"
+      }
+    ]
+  },
+  "16": {
+    "slide_number": 16,
+    "title": "每次遮挡只改变一个残基位置",
+    "notes": "现在从硬件过程落到评分输入。对每个 i=1…238，runner 复制同一条长度 T=240 的 token 序列，只把 t_i 换成 `<mask>`；例如 G24 的上下文保持，只有第 24 个残基 token 被遮挡。模型在该位置输出 64 类 logits，脚本取 20 个标准氨基酸并在这 20 类内重新 Softmax，得到长度 20 的概率向量和熵 H_i=−Σp log p。每个 i 最终对应一行评分记录。T 保持不变，便于逐位比较；attention 使用有效位点信息，没有因果遮罩。预训练时掩码标签产生交叉熵梯度，本次逐位循环只读模型输出。下一页用 G24 的实数值定义条件偏好。来源：S03、S05、S06。",
+    "source_ids": [
+      "S03",
+      "S05",
+      "S06"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      }
+    ]
+  },
+  "17": {
+    "slide_number": 17,
+    "title": "G24 的条件偏好为 0.78125",
+    "notes": "遮挡给出同一上下文下 20 类的相对偏好。定义 m_i=log p(a_i)−max_{b∈A_i^alt}log p(b)，其中 a_i 是 FASTA 的观察残基，A_i^alt 是其余 19 个标准氨基酸；m_i 的单位为自然对数边际。G24 的 log p(G)=-1.72166967，最优替代 K 的 log p=-2.50291967，所以 m_24=0.78125，熵为 2.7862651。正值表示观察残基高于该替代集合的最大项；该量仍是模型条件偏好标量。它在 scalar 表中每位一项，后续将与新颖度一起标准化。预训练梯度来自 MLM，当前 m_i 由冻结前向读出。下一页定义 n_i 的邻域比较。来源：S03、S05。",
+    "source_ids": [
+      "S03",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "18": {
+    "slide_number": 18,
+    "title": "局部新颖度比较残基与两侧邻居",
+    "notes": "m_i 衡量遮挡后恢复原残基的偏好，n_i 再问该位置的上下文化向量是否偏离邻域。对 h_i∈R^2560，取左右各至多 5 个邻居的均值 c_i∈R^2560，计算 n_i=1−cos(h_i,c_i)；余弦分母是两个向量范数的乘积，两向量同向时 cos=1、n=0，正交的玩具例子 cos=0、n=1。G24 的实测 n_24=0.1674523，这是无量纲标量。c_24 汇集 position 19–23 与 25–29 的十行向量。序列端点可用邻居较少，因而读全长曲线时要保留端点效应。这里的二维图仅作几何示意，完整计算在 2560 维。H 和 n 都来自冻结前向；下一页把 m、n 合并成可审计的 s。来源：S02、S03、S05。",
+    "source_ids": [
+      "S02",
+      "S03",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "19": {
+    "slide_number": 19,
+    "title": "综合评分保留两个分量与标准化规则",
+    "notes": "这页把两个标量统一到同一排序尺度。对 u 使用 z(u)=(u−median)/scale，scale=1.4826MAD；本运行的 s_i=0.7z(max(m_i,0))+0.3z(n_i)，故 s∈R^238。238 位中 m 为正的有 28 个，裁剪后该分量的 median 与 MAD 为零，代码回退到 std=0.2061997034；210 个负 m 经裁剪后为零，条件偏好 z 固定为零，它们的相对次序完全由新颖度项决定；n 的 MAD-scale 为 0.0270947251。例子是 G24 的两支 z 分量共同给出 s_24=3.4225727。0.7、0.3 是初始启发权重，rank 只服务这条蛋白的排序。当前排名仅由 m、n 计算，SAE 只在后段解释。预训练梯度未在本次执行。下一页把全部 238 个 s_i 画成曲线。来源：S03、S05、S06。",
+    "source_ids": [
+      "S03",
+      "S05",
+      "S06"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S06",
+        "label": "独立审计结构化数据",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json"
+      }
+    ]
+  },
+  "20": {
+    "slide_number": 20,
+    "title": "全长曲线显示候选信号集中位置",
+    "notes": "综合分数已经定义，这张图显示其在 238 个 FASTA 位置上的完整分布。横轴是 1-based position，纵轴为 s_i；每个点来自同一张 candidate_sites_all 表，因此包含 M1 和 SYG 区域。例子中 G24 的坐标为 position=24、score=3.4226，读者可同时回查 m、n 两个分量。端点只有较短的 ±5 邻域，M1 的高值也提示需要单独敏感性检查；页面没有把未来的端点剔除实验写成现有结果。曲线来自冻结推理的一条蛋白，且 SAE 未参与任何点的计算。下一页将曲线压缩为完整 top10 表。来源：S03、S05。",
+    "source_ids": [
+      "S03",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "21": {
+    "slide_number": 21,
+    "title": "前十名由 M1 和多个内部残基组成",
+    "notes": "曲线的可读摘要是按 s_i 降序列出的 10 个位置。表中的 rank、position、residue、m、n、s 都是一行一个残基的标量字段；例如 M1 的 s=10.9852，G24 的 s=3.4226，随后为 K26、G20、G40、G91、K45、D173、L195、G174。rank 描述这 238 个 s_i 的次序，概率语义未赋予该字段。top10 让我们比较内部候选与起点候选，也保留所有数值以便回查。它来自同一冻结前向和固定 0.7/0.3 设置；SAE 特征尚未加入排名。下一页单独检查 M1 的端点信号。来源：S03、S05。",
+    "source_ids": [
+      "S03",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "22": {
+    "slide_number": 22,
+    "title": "M1 的高分提示端点信号需要单独检查",
+    "notes": "top10 的首位 M1 需要先按位置属性解释。M1 是 FASTA 的起始甲硫氨酸，m_1=2.8046874、n_1=0.2300912、s_1=10.9852268；它与 G24、K26、G20、G40 的横向条形比较显示出明显端点影响。每个条都只是 s_i 标量，形状为选中 5 位的长度 5 向量。例子是删除端点或改变邻域窗口可作为未来敏感性分析的设计，当前运行保留原始 M1 次序。预训练梯度塑造了模型对序列起点的统计响应；本次没有额外训练或消融。下一页用已知发色团做一个独立的排序参照。来源：S02、S03、S04、S05。",
+    "source_ids": [
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "23": {
+    "slide_number": 23,
+    "title": "已知发色团残基位于排名后段",
+    "notes": "独立参照把当前排序放回 GFP 生物学背景。UniProt P42212 的 canonical GFP 发色团三元组为 S65、Y66、G67；1EMA 是 S65T、Q80R 变体，提供结构编号与 CRO 参照。在本次 s∈R^238 的排序中，它们分别为 rank 225、223、211，分数为 -0.3877、-0.3572、-0.3005，而 G24 为 rank 2。例子说明 rank 轴越小越靠前，三元组的三个位置仍保留在全部表中。这个观察的结论范围止于当前 GFP 控制、旧 checkpoint 加载路径和既定评分；模型能力、色团化学与功能识别需要官方匹配推理、多蛋白和功能数据校准。SAE 仍未进入 s。下一页转向 SAE 如何读取第 60 层表示。来源：S03、S12、S13、S14。",
+    "source_ids": [
+      "S03",
+      "S12",
+      "S13",
+      "S14"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      }
+    ]
+  },
+  "24": {
+    "slide_number": 24,
+    "title": "SAE 将第60层向量编码为稀疏特征",
+    "notes": "排名完成后，SAE 为解释提供另一条冻结读取通道。对每条 layer60 表示 h_i∈R^2560，它沿末维即时计算均值 μ_i 与标准差 σ_i（各为 R^1）并作 z-score；随后 x_i−b_dec 经 W_enc∈R^(2560×16384)、ReLU 与沿 feature 维的 TopK(k=64) 得到 f_i∈R^16384，再由 W_dec∈R^(16384×2560) 和 b_dec 重建到 R^2560。例子中实际返回为 N×16384；本次 N=240 含 cls/eos，筛选 residue token 后导出 238×16384。W_enc、W_dec 独立且无 b_enc；本运行默认 normalize_sae=false，CSV 保留 raw activation，未施加逐 feature max/IDF 标度。SAE 训练冻结 ESMC、更新 SAE 参数以承受重建梯度；本次二者均冻结，ranking 仍只用 m、n。下一页核对 64 的稀疏度。来源：S01、S04、S05、S10、S18。",
+    "source_ids": [
+      "S01",
+      "S04",
+      "S05",
+      "S10",
+      "S18"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S18",
+        "label": "已安装 ESM SAE 实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\sae.py; E:\\ESMC\\esmc_feature_site_pipeline\\.venv312\\Lib\\site-packages\\esm\\models\\esmc\\model.py"
+      }
+    ]
+  },
+  "25": {
+    "slide_number": 25,
+    "title": "每个残基保留 64 个非零 SAE 激活",
+    "notes": "SAE 的输出可按稀疏矩阵理解：F∈R^(238×16384)，每行对应一个残基、每列对应一个 feature ID。本运行实际保存 15,232 条非零记录，等于 238×64；全部 238 个位置各有 64 项，合计覆盖 1,134 个不同 ID。玩具 6×12 矩阵只用来显示零值怎样省略，真实 CSV 保存的是 (position, feature_id, activation) 三元组。k=64 表示每位置的组合预算，1,134 表示这条蛋白触发过的特征集合规模。原始 activation 没有跨 feature 的归一化，本页不把数值大小转成置信度。SAE 与 ESMC 均冻结。下一页把 feature ID 连接到官方描述表。来源：S01、S04、S05、S10、S11。",
+    "source_ids": [
+      "S01",
+      "S04",
+      "S05",
+      "S10",
+      "S11"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      }
+    ]
+  },
+  "26": {
+    "slide_number": 26,
+    "title": "特征编号把激活表连接到官方描述",
+    "notes": "`feature_id` 是 codebook 索引；按它 join 稀疏条目，和 1-based FASTA position 不混用，也不加 1。合并 (position, feature_id, activation) 与 (feature_id, description) 形成解释表；1,134 个活跃 ID 都有 description。覆盖率只表示 ID 有文本；泛化或意义未知条目仍需独立建立生物学含义。如 G24 的 F13094 对应“β-strand-connecting loop/turn”类描述。描述来自官方 agent-generated 数据集，含义需外部证据。排名只由 m、n 组成，join 不回写 s_i；raw activation 未做 IDF/max 标准化。下页审阅 M1。来源：S04、S05、S10、S11。",
+    "source_ids": [
+      "S04",
+      "S05",
+      "S10",
+      "S11"
+    ],
+    "sources": [
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      }
+    ]
+  },
+  "27": {
+    "slide_number": 27,
+    "title": "M1 的两个 SAE 特征对应序列起点",
+    "notes": "把 join 用在排名第 1 的 M1，可看到两个为讲解而选的代表性 feature：F8545 的 activation 为 9.5625、活跃于 5 个位置，描述指向可及链端；F11504 为 3.4375、只活跃于 position 1，描述指向 initiator methionine。M1 的字符与位置均来自 FASTA，f_1 是长度 16384 且有 64 个非零值的稀疏向量。这里选择的是可审阅语义，原始 activation 的跨 ID 大小不承担“最强生物信号”含义。SAE 描述与 M1 端点属性相容，功能证据留给独立来源。下一页以内部候选 G24 检查局部转角语义。来源：S02、S04、S10、S11、S13、S14。",
+    "source_ids": [
+      "S02",
+      "S04",
+      "S10",
+      "S11",
+      "S13",
+      "S14"
+    ],
+    "sources": [
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      }
+    ]
+  },
+  "28": {
+    "slide_number": 28,
+    "title": "G24 的稀疏特征符合转角候选语义",
+    "notes": "从端点转到内部 G24，可以用同一 join 检查特征和结构环境是否相容。F13094=4.6875，active_position_count=9；F9528=4.53125，active_position_count=13，官方描述涉及 β-strand-connecting loop 或 tight β-turn。它们是 f_24∈R^16384 的 64 个非零项中为讲解选择的代表条目。1EMA 审计把 G24 放在 polymer label 23–24 的未分配二级结构区，紧邻 25–36 sheet。描述与该相邻关系相容，GFP 特异功能因果仍待实验或专门对照。s_24 仍只由 m、n 给出。下一页并列两个高排名的 β 结构上下文。来源：S03、S04、S10、S11、S13、S14、S15。",
+    "source_ids": [
+      "S03",
+      "S04",
+      "S10",
+      "S11",
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      }
+    ]
+  },
+  "29": {
+    "slide_number": 29,
+    "title": "G40 与 K45 的特征指向 β 结构上下文",
+    "notes": "同一审阅方式可检验两个邻近高排名候选。G40 的代表条目 F6141=5.15625，描述强调 loop-to-β 或 edge-strand 过渡；K45 的 F3904=3.234375，描述强调 β-strand。它们来自 f_40、f_45∈R^16384 的 64 个非零位置，跨 ID 数值未归一化。1EMA 审计中 G40 位于 polymer label 37–40 的未分配二级结构区，K45 位于 41–48 sheet 区，二者与通用结构语义相容。当前排名来自 s_40、s_45 的 m+n 组合，SAE 没有加权进入排序。下一页处理这类结构解释最关键的编号转换。来源：S03、S04、S10、S11、S13、S14、S15。",
+    "source_ids": [
+      "S03",
+      "S04",
+      "S10",
+      "S11",
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      }
+    ]
+  },
+  "30": {
+    "slide_number": 30,
+    "title": "PDB 位点解释依赖正确的残基编号",
+    "notes": "结构表的编号需要先与 FASTA 对齐。1EMA 链 A 是 S65T、Q80R 变体；其 CRO 在 label_seq_id 65、auth_seq_id 66 聚合 P42212 输入的 65–67 位。输入位置大于等于 68 时，审计映射为 label=input−2、author=input。例子是 G91 对应 label89、author91，G174 对应 label172、author174。直接把 label 当作 FASTA 编号会使后段位置偏移两位，因此表中同时读 input position、label_seq_id、author residue 与审计后的结构 context。CRO 合并给出该平移的结构原因。下一页据此限制泛化 feature 描述的解释。来源：S12、S13、S14、S15。",
+    "source_ids": [
+      "S12",
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "sources": [
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      }
+    ]
+  },
+  "31": {
+    "slide_number": 31,
+    "title": "多个高激活描述缺少 GFP 特异证据",
+    "notes": "编号校正后，可以更谨慎地读高激活的自然语言标签。S65 的 F627、Y66 的 F6579、G67 的 F9237 分别是泛 serine、tyrosine、glycine 识别类描述，说明真实发色团位置也可能只得到身份级解释；L195 的 F16243 和 F5474 涉及 helix 或 disorder 语义，需要与结构参照分开审阅。例子中“未分配二级结构”只描述该参考模型的分类，动态无序仍需要专门证据。feature 描述来自 agent-generated 数据集，原始 activation 未归一化，表格只形成候选假设。当前 s_i 与这些标签独立计算。下一页把直接观测、外部确认和待校准项分层。来源：S03、S04、S10、S11、S12、S13、S14、S15。",
+    "source_ids": [
+      "S03",
+      "S04",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "sources": [
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      }
+    ]
+  },
+  "32": {
+    "slide_number": 32,
+    "title": "当前证据支持流程完成与结构假设",
+    "notes": "这页把证据按强度分开。直接观测包括 238 行评分、H∈R^(238×2560)、15,232 条 activation 和 rank；外部确认包括 P42212 序列身份、SYG 发色团与审计后的 1EMA 编号。例子是 G24 的 rank 2 属于直接观测，feature 描述与相邻 sheet 的关系属于结构假设。当前工件支持该实现、该输入下的观察性对照；旧 checkpoint 已通过 key/shape 检查，官方输出数值等价、跨实现 MLM 数值、SDPA 与其他 kernel、窗口权重、多蛋白和功能参照仍待完成。排名由 m、n 计算，SAE 用于事后解释。下一页用版本 manifest 支持复查。来源：S01、S03、S04、S05、S10、S12、S13、S14、S15、S16。",
+    "source_ids": [
+      "S01",
+      "S03",
+      "S04",
+      "S05",
+      "S10",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S16"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      },
+      {
+        "id": "S16",
+        "label": "兼容性与边界审计",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\evidence.json (compatibility_observations; compatibility_and_scientific_boundaries; mask_id_audit)"
+      }
+    ]
+  },
+  "33": {
+    "slide_number": 33,
+    "title": "固定版本和产物支持再次核查",
+    "notes": "证据分层之后，复查依赖可复现的版本坐标。此次运行记录 dense checkpoint ffd268e4、SAE 99752fe6、Python 3.12.10、Torch 2.11.0+cu128、BF16、masked batch=1、window=5、权重 0.7/0.3，以及 B=1、T=240、H=238×2560。例子是 `run_esmc_site_pipeline.py --smoke-test --sae` 读取 GFP FASTA 后创建带时间戳的新目录，并输出 NPZ、CSV 与报告。版本名称只描述 2026-09-05 这次运行，后续重跑应重新记录 revision 与环境。下一页将这些产物转成下一轮验证的优先级。来源：S01、S02、S03、S04、S05。",
+    "source_ids": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S02",
+        "label": "输入序列与导出表示",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\input_sequence.fasta; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\residue_embeddings.npz"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S05",
+        "label": "本地运行实现",
+        "locator": "E:\\ESMC\\esmc_feature_site_pipeline\\run_esmc_site_pipeline.py"
+      }
+    ]
+  },
+  "34": {
+    "slide_number": 34,
+    "title": "下一轮验证围绕数值校准与功能参照",
+    "notes": "最后把全链路收束为可执行的结论。第一，单卡冻结前向已把 238 aa 输入转换为 H、238 位 ranking 和 15,232 条 SAE 激活；第二，SAE 的 16384 维稀疏码提供可检验的 feature 描述；第三，SYG 在当前 s∈R^238 的后段，限定了这套双信号排序的当前用途。例子是下一轮可用官方匹配推理比较同一 h_i、m_i、n_i，再扩展到多个已知功能蛋白、经审计的结构编号和 DMS 或实验参照。所有未来比较应继续区分直接数值、外部证据和机制假设；微调需另立实验设计。来源：S01、S03、S04、S07、S09、S10、S11、S12、S13、S14、S15。",
+    "source_ids": [
+      "S01",
+      "S03",
+      "S04",
+      "S07",
+      "S09",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "sources": [
+      {
+        "id": "S01",
+        "label": "本次运行元数据",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\run_metadata.json"
+      },
+      {
+        "id": "S03",
+        "label": "本次候选评分表",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\candidate_sites_all.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\top_candidate_sites.csv"
+      },
+      {
+        "id": "S04",
+        "label": "本次 SAE 激活与摘要",
+        "locator": "E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_residue_activations.csv; E:\\ESMC\\runs\\run_20260905T135554Z_smoke_gfp\\sae_feature_summary.csv"
+      },
+      {
+        "id": "S07",
+        "label": "Biohub/esm 官方仓库",
+        "locator": "https://github.com/Biohub/esm"
+      },
+      {
+        "id": "S09",
+        "label": "当前 ESMC 6B 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B"
+      },
+      {
+        "id": "S10",
+        "label": "ESMC 6B SAE layer60 模型卡",
+        "locator": "https://huggingface.co/biohub/ESMC-6B-sae-layer60-k64-codebook16384"
+      },
+      {
+        "id": "S11",
+        "label": "ESMC SAE Features 数据集",
+        "locator": "https://huggingface.co/datasets/biohub/ESMC-SAE-Features"
+      },
+      {
+        "id": "S12",
+        "label": "UniProt GFP_AEQVI / P42212",
+        "locator": "https://www.uniprot.org/uniprotkb/P42212"
+      },
+      {
+        "id": "S13",
+        "label": "RCSB PDB 1EMA",
+        "locator": "https://www.rcsb.org/structure/1EMA"
+      },
+      {
+        "id": "S14",
+        "label": "1EMA 原始 mmCIF 与 API 摘要",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.cif; E:\\ESMC\\ppt_handoff_20260906\\sources\\audit\\1EMA.A.current-api.json"
+      },
+      {
+        "id": "S15",
+        "label": "独立证据审计报告",
+        "locator": "E:\\ESMC\\ppt_handoff_20260906\\EVIDENCE_AUDIT.md"
+      }
+    ]
+  }
+}
